@@ -1,36 +1,24 @@
 {
-  "name": "electron-react-webpack-boilerplate",
-  "version": "1.1.0",
-  "description": "Minimal Electron, React, TypeScript and Webpack boilerplate to help you get started with building your next app.",
+  "name": "sauna-control",
+  "productName": "HotWave",
+  "version": "1.0.0",
+  "description": "app to control a sauna based on electron",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Y0nnyy/electron-react-boilerplate.git"
-  },
-  "homepage": "",
-  "bugs": {
-    "url": "https://github.com/Y0nnyy/electron-react-boilerplate.git/issues"
-  },
-  "author": {
-    "name": "Jonas Geschke",
-    "email": "mail@yonny.de",
-    "url": "https://github.com/Y0nnyy"
+    "url": "git+https://github.com/Y0nnyy/sauna-control.git"
   },
   "keywords": [
-    "app",
-    "boilerplate",
-    "electron",
-    "open",
-    "open-source",
-    "react",
-    "reactjs",
-    "source",
-    "webpack",
-    "typescript",
-    "native",
-    "modules"
+    "sauna",
+    "control",
+    "pid",
+    "i2c"
   ],
+  "author": "Jonas Geschke",
+  "bugs": {
+    "url": "https://github.com/Y0nnyy/sauna-control/issues"
+  },
   "engines": {
     "node": ">=9.0.0",
     "npm": ">=5.0.0",
