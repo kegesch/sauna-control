@@ -101,6 +101,7 @@ export default styled(App)`
     bottom: 0;
     left: 0;
     right: 0;
+    font-family: sans-serif;
 
     div.AppFooter {
         position: absolute;

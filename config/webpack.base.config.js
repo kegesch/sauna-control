@@ -36,8 +36,7 @@ module.exports = {
   },
   output: {
     path: build,
-    filename: "[name].js",
-    publicPath: './'
+    filename: "[name].js"
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
@@ -50,7 +49,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin(),
     new ElectronNativePlugin({
-      forceRebuild: true
+      forceRebuild: true,
+      optionalDependencies: true
     }),
   ],
   stats: {
