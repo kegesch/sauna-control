@@ -1,7 +1,7 @@
 import {observer, Provider} from "mobx-react";
 import * as React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import styled from "styled-Components";
+import styled from "styled-components";
 import { MaterialColors} from "./Components/HelperComponents";
 import Navigation from "./Components/Navigation";
 import DateTimeStore from "./Components/Stores/DateTimeStore";

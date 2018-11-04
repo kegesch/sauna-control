@@ -1,5 +1,5 @@
 import * as React from "react";
-import styled from "styled-Components";
+import styled from "styled-components";
 
 interface IColorPalette {
     black: string;

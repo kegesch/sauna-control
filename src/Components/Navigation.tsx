@@ -2,7 +2,7 @@ import {inject, observer} from "mobx-react";
 import * as React from "react";
 import {Link} from "react-router-dom";
 import * as Rx from "rxjs";
-import styled from "styled-Components";
+import styled from "styled-components";
 import {Button, MaterialColors} from "./HelperComponents";
 import {BoxedIcon, default as Icon} from "./Icon";
 import SystemStore from "./Stores/SystemStore";

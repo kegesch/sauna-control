@@ -1,6 +1,6 @@
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import styled from "styled-Components";
+import styled from "styled-components";
 import {MaterialColors, Separator} from "./HelperComponents";
 import {BoxedIcon} from "./Icon";
 import LightsStore from "./Stores/LightsStore";

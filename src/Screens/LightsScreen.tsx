@@ -1,6 +1,6 @@
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import styled from "styled-Components";
+import styled from "styled-components";
 import {BigInfo, MaterialColors, SectionHeader} from "../Components/HelperComponents";
 import {BoxedIcon} from "../Components/Icon";
 import {upDown$} from "../Components/Navigation";

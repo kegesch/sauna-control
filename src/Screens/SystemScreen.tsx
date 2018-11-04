@@ -1,6 +1,6 @@
 import {inject, observer} from "mobx-react";
 import * as React from "react";
-import styled from "styled-Components";
+import styled from "styled-components";
 import {BigInfo, MaterialColors, SectionHeader} from "../Components/HelperComponents";
 import Icon from "../Components/Icon";
 import DateTimeStore from "../Components/Stores/DateTimeStore";
