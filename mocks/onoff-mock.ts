@@ -1,4 +1,4 @@
-export default class GPIO {
+export class Gpio {
 
     public static HIGH = 1;
     public static LOW = 0;

@@ -265,6 +265,13 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@types/i2c-bus@^1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@types/i2c-bus/-/i2c-bus-1.0.19.tgz#58a9208370abf4d8e910ae37b4aa4cfbaecbc7d4"
+  integrity sha512-kdzu2dQz6rEdPVNzyHFxtmr78p1+X2RG4JZo7OTTdb9i122CGhSf8oNoR+aMcKW+0UhTOnCaNRbBWFh6h1aEag==
+  dependencies:
+    "@types/node" "*"
+
 "@types/jest@^23.3.5":
   version "23.3.9"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.9.tgz#c16b55186ee73ae65e001fbee69d392c51337ad1"
@@ -279,6 +286,13 @@
   version "8.10.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.37.tgz#d2db49dc6a4e087c3245f22b92061f22494771e5"
   integrity sha512-Jp39foY8Euv/PG4OGPyzxis82mnjcUtXLEMA8oFMCE4ilmuJgZPdV2nZNV1moz+99EJTtcpOSgDCgATUwABKig==
+
+"@types/onoff@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@types/onoff/-/onoff-3.2.1.tgz#8d26ecb9dcbe779a2bc4094c5c6cbd723f2d1a93"
+  integrity sha512-6ArS4IaFbCzko5d2sJwGiZv/m+e+cTfZnGWiIPyNh5ALIBqJM18IPPrwTaKuOV6ei9hq75akVZRkvyjEP3qZ8g==
+  dependencies:
+    "@types/node" "*"
 
 "@types/prop-types@*":
   version "15.5.6"
