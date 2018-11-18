@@ -49,7 +49,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin(),
     new ElectronNativePlugin({
-      forceRebuild: true,
+      forceRebuild: false,
       optionalDependencies: true
     }),
   ],
