@@ -1,7 +1,7 @@
 // @ts-ignore
 import i2c from "i2c-bus";
 import mutex from "node-mutex";
-import GPIO from "onoff";
+import {Gpio as GPIO} from "onoff";
 import * as Rx from "rxjs";
 import {ISensorService} from "./Interfaces/ISensorService";
 import ISystemService from "./Interfaces/ISystemService";
