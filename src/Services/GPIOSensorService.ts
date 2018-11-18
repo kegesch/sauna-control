@@ -1,6 +1,5 @@
 // @ts-ignore
 import i2c, {I2cBus} from "i2c-bus";
-import mutex from "node-mutex";
 import {Gpio} from "onoff";
 import * as Rx from "rxjs";
 import {ISensorService} from "./Interfaces/ISensorService";
@@ -37,7 +36,7 @@ export default class GPIOSensorService implements ISensorService {
 
     private systemService: ISystemService;
 
-    private MUTEX = "EVAPORATE";
+    private MUTEX: boolean = false;
 
     private TEMP_HUMID_SENSOR_ADDR = 0x40;
     private CMD_TRIGGER_TEMP_MEASUREMENT_HOLD = 0xE3;
@@ -74,37 +73,26 @@ export default class GPIOSensorService implements ISensorService {
     }
 
     public setHeat(heat: boolean): void {
-        mutex.lock(this.MUTEX).then(() => {
-            if (this.systemService.systemState === "on" && heat && !this.isDoorOpen()) {
-                this.heatPhase12.writeSync(1);
-                this.heatPhase3.writeSync(1);
-                this.heating$.next(true);
-            } else {
-                this.heatPhase12.writeSync(0);
-                this.heatPhase3.writeSync(0);
-                this.heating$.next(false);
-            }
-        }).error(() => {
-            //
-        });
+        if (this.systemService.systemState === "on" && heat && !this.isDoorOpen()) {
+            this.heatPhase12.writeSync(1);
+            this.heatPhase3.writeSync(1);
+            this.heating$.next(true);
+        } else {
+            this.heatPhase12.writeSync(0);
+            this.heatPhase3.writeSync(0);
+            this.heating$.next(false);
+        }
+        this.MUTEX = heat;
     }
 
     public setEvaporate(evaporate: boolean): void {
-        mutex.lock(this.MUTEX).then((unlock) => {
-            if (this.systemService.systemState === "on" && evaporate && !this.isDoorOpen()) {
-                this.evaporate.writeSync(1);
-                this.evaporating$.next(true);
-            } else {
-                this.evaporate.writeSync(0);
-                this.evaporating$.next(false);
-                unlock();
-            }
-        }).error((unlock) => {
-            this.heatPhase3.writeSync(0);
-            unlock();
-            this.setEvaporate(evaporate);
-        });
-
+        if (this.MUTEX && this.systemService.systemState === "on" && evaporate && !this.isDoorOpen()) {
+            this.evaporate.writeSync(1);
+            this.evaporating$.next(true);
+        } else {
+            this.evaporate.writeSync(0);
+            this.evaporating$.next(false);
+        }
     }
 
     public finalize(): void {
