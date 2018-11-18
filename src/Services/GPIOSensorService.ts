@@ -1,7 +1,7 @@
 // @ts-ignore
-import i2c from "i2c-bus";
+import i2c, {I2cBus} from "i2c-bus";
 import mutex from "node-mutex";
-import {Gpio as GPIO} from "onoff";
+import {Gpio} from "onoff";
 import * as Rx from "rxjs";
 import {ISensorService} from "./Interfaces/ISensorService";
 import ISystemService from "./Interfaces/ISystemService";
@@ -43,13 +43,13 @@ export default class GPIOSensorService implements ISensorService {
     private CMD_TRIGGER_TEMP_MEASUREMENT_HOLD = 0xE3;
     private CMD_TRIGGER_HUMID_MEASUREMENT_HOLD = 0xE5;
 
-    private door: GPIO;
-    private energy: GPIO;
-    private heatPhase12: GPIO;
-    private heatPhase3: GPIO;
-    private evaporate: GPIO;
+    private door: Gpio;
+    private energy: Gpio;
+    private heatPhase12: Gpio;
+    private heatPhase3: Gpio;
+    private evaporate: Gpio;
 
-    private i2c1;
+    private i2c1: I2cBus;
 
     private timer;
     private fetchInterval: number = 1000 * 5; // every 5 seconds
@@ -57,11 +57,11 @@ export default class GPIOSensorService implements ISensorService {
     public constructor(systemService: ISystemService) {
         this.systemService = systemService;
 
-        this.door = new GPIO(26, "in");
-        this.energy = new GPIO(16, "in");
-        this.heatPhase12 = new GPIO(17, "out");
-        this.heatPhase3 = new GPIO(5, "out");
-        this.evaporate = new GPIO(22, "out");
+        this.door = new Gpio(26, "in");
+        this.energy = new Gpio(16, "in");
+        this.heatPhase12 = new Gpio(17, "out");
+        this.heatPhase3 = new Gpio(5, "out");
+        this.evaporate = new Gpio(22, "out");
 
         this.i2c1 = i2c.openSync();
 
@@ -76,12 +76,12 @@ export default class GPIOSensorService implements ISensorService {
     public setHeat(heat: boolean): void {
         mutex.lock(this.MUTEX).then(() => {
             if (this.systemService.systemState === "on" && heat && !this.isDoorOpen()) {
-                this.heatPhase12.writeSync(GPIO.HIGH);
-                this.heatPhase3.writeSync(GPIO.HIGH);
+                this.heatPhase12.writeSync(1);
+                this.heatPhase3.writeSync(1);
                 this.heating$.next(true);
             } else {
-                this.heatPhase12.writeSync(GPIO.LOW);
-                this.heatPhase3.writeSync(GPIO.LOW);
+                this.heatPhase12.writeSync(0);
+                this.heatPhase3.writeSync(0);
                 this.heating$.next(false);
             }
         }).error(() => {
@@ -92,15 +92,15 @@ export default class GPIOSensorService implements ISensorService {
     public setEvaporate(evaporate: boolean): void {
         mutex.lock(this.MUTEX).then((unlock) => {
             if (this.systemService.systemState === "on" && evaporate && !this.isDoorOpen()) {
-                this.evaporate.writeSync(GPIO.HIGH);
+                this.evaporate.writeSync(1);
                 this.evaporating$.next(true);
             } else {
-                this.evaporate.writeSync(GPIO.LOW);
+                this.evaporate.writeSync(0);
                 this.evaporating$.next(false);
                 unlock();
             }
         }).error((unlock) => {
-            this.heatPhase3.writeSync(GPIO.LOW);
+            this.heatPhase3.writeSync(0);
             unlock();
             this.setEvaporate(evaporate);
         });
@@ -110,11 +110,11 @@ export default class GPIOSensorService implements ISensorService {
     public finalize(): void {
         this.door.unexport();
         this.energy.unexport();
-        this.heatPhase12.writeSync(GPIO.LOW);
+        this.heatPhase12.writeSync(0);
         this.heatPhase12.unexport();
-        this.heatPhase3.writeSync(GPIO.LOW);
+        this.heatPhase3.writeSync(0);
         this.heatPhase3.unexport();
-        this.evaporate.writeSync(GPIO.LOW);
+        this.evaporate.writeSync(0);
         this.evaporate.unexport();
 
         this.i2c1.closeSync();
