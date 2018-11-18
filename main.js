@@ -28,8 +28,8 @@ if (process.platform === 'win32') {
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 480,
-    height: 800,
+    minWidth: 480,
+    minHeight: 800,
     resizable: false,
     icon: __dirname + '/assets/icons/icon.png',
     webPreferences: {

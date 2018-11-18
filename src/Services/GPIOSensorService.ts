@@ -77,11 +77,14 @@ export default class GPIOSensorService implements ISensorService {
             this.heatPhase12.writeSync(1);
             this.heatPhase3.writeSync(1);
             this.heating$.next(true);
+            this.evaporate.writeSync(0);
+            this.evaporating$.next(false);
         } else {
             this.heatPhase12.writeSync(0);
             this.heatPhase3.writeSync(0);
             this.heating$.next(false);
         }
+
         this.MUTEX = heat;
     }
 
