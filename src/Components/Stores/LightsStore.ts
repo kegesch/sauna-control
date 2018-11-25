@@ -30,6 +30,7 @@ export default class LightsStore {
             this.lightsService.on();
             this.lightsService.setColor(0xFF, 0xFF, 0xFF);
         } else {
+            this.lightsService.setColor(0x00, 0x00, 0x00);
             this.lightsService.off();
         }
     }

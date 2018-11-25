@@ -41,7 +41,6 @@ export default class LightsScreen extends React.Component<ILightsScreenPropertie
     }
 
     public componentWillUnmount(): void {
-
         this.subscription.unsubscribe();
     }
 
