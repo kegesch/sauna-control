@@ -8,11 +8,11 @@ import ISystemService from "./Interfaces/ISystemService";
 export default class GPIOSensorService implements ISensorService {
 
     private static convertHumidity(relativeHumidity: number): number {
-        return -6 + 125 * (relativeHumidity >>> 16);
+        return -6 + (125 * (relativeHumidity / 65536));
     }
 
     private static convertTemperature(tempSignal: number): number {
-        return -46.85 + 175.72 * (tempSignal >>> 16);
+        return -46.85 + (175.72 * (tempSignal / 65536));
     }
 
     private static checkCRC8(buf): boolean {
@@ -62,7 +62,7 @@ export default class GPIOSensorService implements ISensorService {
         this.heatPhase3 = new Gpio(5, "out");
         this.evaporate = new Gpio(22, "out");
 
-        this.i2c1 = i2c.openSync();
+        this.i2c1 = i2c.openSync(1);
 
         this.timer = setInterval(() => {
             this.temperature$.next(this.getCurrentTemperature());
@@ -122,11 +122,9 @@ export default class GPIOSensorService implements ISensorService {
         data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
         data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
 
-        if (GPIOSensorService.checkCRC8(data)) {
-            const rawTemp = ((data[0] << 8) | data[1]) & 0xFFFC;
+        const rawTemp = ((data[0] << 8) | data[1]) & 0xFFFC;
 
-            return GPIOSensorService.convertTemperature(rawTemp);
-        }
+        return GPIOSensorService.convertTemperature(rawTemp);
     }
 
     private getHumidity(): number {
@@ -138,11 +136,9 @@ export default class GPIOSensorService implements ISensorService {
         data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
         data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
 
-        if (GPIOSensorService.checkCRC8(data)) {
-            const rawHumid = ((data[0] << 8) | data[1]) & 0xFFFC;
+        const rawHumid = ((data[0] << 8) | data[1]) & 0xFFFC;
 
-            return GPIOSensorService.convertHumidity(rawHumid);
-        }
+        return GPIOSensorService.convertHumidity(rawHumid);
     }
 
     private isDoorOpen(): boolean {
