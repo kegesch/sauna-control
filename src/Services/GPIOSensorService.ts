@@ -1,31 +1,11 @@
 // @ts-ignore
-import i2c, {I2cBus} from "i2c-bus";
+import htu21d from "htu21d-i2c";
 import {Gpio} from "onoff";
 import * as Rx from "rxjs";
 import {ISensorService} from "./Interfaces/ISensorService";
 import ISystemService from "./Interfaces/ISystemService";
 
 export default class GPIOSensorService implements ISensorService {
-
-    private static convertHumidity(relativeHumidity: number): number {
-        return -6 + (125 * (relativeHumidity / 65536));
-    }
-
-    private static convertTemperature(tempSignal: number): number {
-        return -46.85 + (175.72 * (tempSignal / 65536));
-    }
-
-    private static checkCRC8(buf): boolean {
-        const poly = 0x98800000;
-        let dataandcrc = (buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8);
-        for (let i = 0; i < 24; i++) {
-            if (dataandcrc & 0x80000000) {
-                dataandcrc ^= poly;
-            }
-            dataandcrc <<= 1;
-        }
-        return (dataandcrc === 0);
-    }
 
     public heating$: Rx.Subject<boolean> = new Rx.Subject<boolean>();
     public temperature$: Rx.Subject<number> = new Rx.Subject<number>();
@@ -48,9 +28,9 @@ export default class GPIOSensorService implements ISensorService {
     private heatPhase3: Gpio;
     private evaporate: Gpio;
 
-    private i2c1: I2cBus;
+    private sensor: any;
 
-    private timer;
+    private timer: any;
     private fetchInterval: number = 1000 * 5; // every 5 seconds
 
     public constructor(systemService: ISystemService) {
@@ -62,11 +42,11 @@ export default class GPIOSensorService implements ISensorService {
         this.heatPhase3 = new Gpio(5, "out");
         this.evaporate = new Gpio(22, "out");
 
-        this.i2c1 = i2c.openSync(1);
+        this.sensor = new htu21d();
 
-        this.timer = setInterval(() => {
-            this.temperature$.next(this.getCurrentTemperature());
-            this.humidity$.next(this.getHumidity());
+        this.timer = setInterval(async () => {
+            this.temperature$.next(await this.getCurrentTemperature());
+            this.humidity$.next(await this.getHumidity());
             this.doorOpen$.next(this.isDoorOpen());
             this.energyOn$.next(this.isEnergyOn());
         }, this.fetchInterval);
@@ -108,37 +88,27 @@ export default class GPIOSensorService implements ISensorService {
         this.evaporate.writeSync(0);
         this.evaporate.unexport();
 
-        this.i2c1.closeSync();
-
         clearInterval(this.timer);
     }
 
-    private getCurrentTemperature(): number {
-        this.i2c1.sendByteSync(this.TEMP_HUMID_SENSOR_ADDR, this.CMD_TRIGGER_TEMP_MEASUREMENT_HOLD);
-
-        const data = [];
-
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-
-        const rawTemp = ((data[0] << 8) | data[1]) & 0xFFFC;
-
-        return GPIOSensorService.convertTemperature(rawTemp);
+    private async getCurrentTemperature(): Promise<number> {
+        return new Promise<number>(function (resolve, reject) {
+            try {
+              htu21d.readTemperature(resolve);
+            } catch (e) {
+              reject(e);
+            }
+        });
     }
 
-    private getHumidity(): number {
-        this.i2c1.sendByteSync(this.TEMP_HUMID_SENSOR_ADDR, this.CMD_TRIGGER_HUMID_MEASUREMENT_HOLD);
-
-        const data = [];
-
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-        data.push(this.i2c1.receiveByteSync(this.TEMP_HUMID_SENSOR_ADDR));
-
-        const rawHumid = ((data[0] << 8) | data[1]) & 0xFFFC;
-
-        return GPIOSensorService.convertHumidity(rawHumid);
+    private async getHumidity(): Promise<number> {
+        return new Promise<number>(function (resolve, reject) {
+            try {
+              htu21d.readHumiditiy(resolve);
+            } catch (e) {
+              reject(e);
+            }
+        });
     }
 
     private isDoorOpen(): boolean {

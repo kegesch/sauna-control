@@ -100,21 +100,21 @@ export default class SensorStore {
 
     @action
     private setCurrentTemp(temp: number ) {
-        this.currentTemp = temp;
+        this.currentTemp = Math.round(temp);
     }
 
     @action
     private setCurrentHumid(humid: number) {
-        this.currentHumid = humid;
+        this.currentHumid = Math.round(humid);
     }
 
     @action
     private setEvaporating(isEvaporating: boolean) {
-        this.isEvaporating = this.isEvaporating;
+        this.isEvaporating = isEvaporating;
     }
 
     @action
     private setHeating(isHeating: boolean) {
-        this.isHeating = this.isHeating;
+        this.isHeating = isHeating;
     }
 }
