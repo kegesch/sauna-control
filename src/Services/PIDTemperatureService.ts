@@ -42,14 +42,15 @@ export default class PIDTemperatureService implements ITemperatureService {
         this.pid.setTarget(this.targetTemp);
 
         clearInterval(this.timer);
+        const that = this;
         this.timer = setInterval(() => {
-           const correction = this.pid.update(this.currentTemp);
-           if (correction !== 0) {
-               this.sensorService.setHeat(true);
+           const correction = that.pid.update(that.currentTemp);
+           if (correction > 0) {
+              that.sensorService.setHeat(true);
            } else {
-               this.sensorService.setHeat(false);
+              that.sensorService.setHeat(false);
            }
-        }, 10 * 1000);
+        }, 5 * 1000);
     }
 
     public getState(): number {
