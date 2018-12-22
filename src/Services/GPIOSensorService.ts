@@ -1,5 +1,5 @@
 // @ts-ignore
-import htu21d from "htu21d-i2c";
+import i2c_htu21d from "htu21d-i2c";
 import {Gpio} from "onoff";
 import * as Rx from "rxjs";
 import {ISensorService} from "./Interfaces/ISensorService";
@@ -17,10 +17,6 @@ export default class GPIOSensorService implements ISensorService {
     private systemService: ISystemService;
 
     private MUTEX: boolean = false;
-
-    private TEMP_HUMID_SENSOR_ADDR = 0x40;
-    private CMD_TRIGGER_TEMP_MEASUREMENT_HOLD = 0xE3;
-    private CMD_TRIGGER_HUMID_MEASUREMENT_HOLD = 0xE5;
 
     private door: Gpio;
     private energy: Gpio;
@@ -42,7 +38,7 @@ export default class GPIOSensorService implements ISensorService {
         this.heatPhase3 = new Gpio(5, "out");
         this.evaporate = new Gpio(22, "out");
 
-        this.sensor = new htu21d();
+        this.sensor = new i2c_htu21d();
 
         this.timer = setInterval(async () => {
             this.temperature$.next(await this.getCurrentTemperature());
@@ -94,7 +90,7 @@ export default class GPIOSensorService implements ISensorService {
     private async getCurrentTemperature(): Promise<number> {
         return new Promise<number>(function (resolve, reject) {
             try {
-              htu21d.readTemperature(resolve);
+              this.sensor.readTemperature(resolve);
             } catch (e) {
               reject(e);
             }
@@ -104,7 +100,7 @@ export default class GPIOSensorService implements ISensorService {
     private async getHumidity(): Promise<number> {
         return new Promise<number>(function (resolve, reject) {
             try {
-              htu21d.readHumiditiy(resolve);
+              this.sensor.readHumiditiy(resolve);
             } catch (e) {
               reject(e);
             }
