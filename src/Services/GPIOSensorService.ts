@@ -88,9 +88,10 @@ export default class GPIOSensorService implements ISensorService {
     }
 
     private async getCurrentTemperature(): Promise<number> {
+        const that = this;
         return new Promise<number>(function (resolve, reject) {
             try {
-              this.sensor.readTemperature(resolve);
+              that.sensor.readTemperature(resolve);
             } catch (e) {
               reject(e);
             }
@@ -98,9 +99,10 @@ export default class GPIOSensorService implements ISensorService {
     }
 
     private async getHumidity(): Promise<number> {
+        const that = this;
         return new Promise<number>(function (resolve, reject) {
             try {
-              this.sensor.readHumiditiy(resolve);
+              that.sensor.readHumidity(resolve);
             } catch (e) {
               reject(e);
             }

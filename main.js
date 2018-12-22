@@ -30,7 +30,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 480,
     minHeight: 800,
-    resizable: false,
+    resizable: true,
     icon: __dirname + '/assets/icons/icon.png',
     webPreferences: {
       webSecurity: false
