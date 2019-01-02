@@ -1,6 +1,6 @@
 import * as convert from "color-convert";
 import ILightsService from "./Interfaces/ILightsService";
-import SPILed from "../../lib/spi-led";
+import SPILed from "../lib/spi-led";
 
 export default class LEDLightsService implements ILightsService {
 

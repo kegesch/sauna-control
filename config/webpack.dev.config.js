@@ -15,7 +15,6 @@ const config = {
   resolve: {
     alias: {
       'i2c-bus': path.resolve(__dirname, '../mocks/i2c-bus-mock.ts'),
-      'rpi-ws2801': path.resolve(__dirname, '../mocks/rpi-ws2801-mock.ts'),
       'onoff': path.resolve(__dirname, '../mocks/onoff-mock.ts')
     }
   },
