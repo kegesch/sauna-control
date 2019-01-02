@@ -1,10 +1,15 @@
-import convert from "color-convert";
-import LEDs from "rpi-ws2801";
+import * as convert from "color-convert";
 import ILightsService from "./Interfaces/ILightsService";
+import SPILed from "../../lib/spi-led";
 
 export default class LEDLightsService implements ILightsService {
 
-    private activeColor: number[];
+    private activeColor: [number, number, number];
+    private ledService: SPILed;
+
+    public LEDLightsService() {
+        this.ledService = new SPILed(0, 0, 160);
+    }
 
     public autoOff(): void {
     }
@@ -13,15 +18,11 @@ export default class LEDLightsService implements ILightsService {
     }
 
     public off(): void {
-        LEDs.disconnect();
-    }
-
-    public on(): void {
-        LEDs.connect(128);
+        this.ledService.fill(0x00, 0x00, 0x00);
     }
 
     public setColor(red: number, green: number, blue: number) {
-        LEDs.fill(red, green, blue);
+        this.ledService.fill(red, green, blue);
         this.activeColor = [red, green, blue];
     }
 
@@ -47,7 +48,7 @@ export default class LEDLightsService implements ILightsService {
 
     private setColorArray(color: number[]) {
         if (!color || color.length !== 3) { throw new Error("color must have three number items"); }
-        LEDs.fill(color[0], color[1], color[2]);
+        this.ledService.fill(color[0], color[1], color[2]);
     }
 
     private fadeColor(color1: number[], color2: number[], duration: number) {

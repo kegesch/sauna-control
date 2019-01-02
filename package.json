@@ -33,6 +33,7 @@
     "postpackage": "electron-packager ./ --out=./builds"
   },
   "dependencies": {
+    "@types/color-convert": "^1.9.0",
     "bindings": "TooTallNate/node-bindings#pull/40/head",
     "color-convert": "^1.9.3",
     "electron": "^3.0.8",
@@ -43,12 +44,11 @@
     "mobx": "^5.5.0",
     "mobx-react": "^5.3.1",
     "moment": "^2.22.2",
+    "pi-spi": "^1.0.3",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",
-    "rpi-ws2801": "0.0.4",
     "rxjs": "^5.5.12",
-    "spi-device": "^2.0.5",
     "styled-components": "^3.4.10"
   },
   "devDependencies": {
@@ -59,6 +59,7 @@
     "@babel/preset-typescript": "^7.1.0",
     "@types/jest": "^23.3.5",
     "@types/onoff": "^3.2.1",
+    "@types/pi-spi": "^0.0.27",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
     "@types/rx": "^4.1.1",

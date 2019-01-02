@@ -14,7 +14,7 @@ export default class PIDTemperatureService implements ITemperatureService {
 
     private targetTemp: number;
     private currentTemp: number;
-    private timer;
+    private timer: any;
 
     private state: number;
 

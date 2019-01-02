@@ -1,6 +1,5 @@
 export default interface ILightsService {
     setColor(red: number, green: number, blue: number): void;
-    on(): void;
     off(): void;
     autoOn(): void;
     autoOff(): void;
