@@ -2,13 +2,13 @@ import * as SPI from "pi-spi";
 
 export default class SPILed {
 
-  private spiBus = 0;
-  private spiPort = 0;
-  private ledAmount = 0;
+  private readonly spiBus: number = 0;
+  private readonly spiPort: number = 0;
+  private readonly ledAmount: number = 0;
 
   private spiDevice: SPI.SPI;
 
-  public SPILed(bus: number, port: number, ledAmount: number) {
+  public constructor(bus: number, port: number, ledAmount: number) {
     this.spiBus = bus;
     this.spiPort = port;
     this.ledAmount = ledAmount;

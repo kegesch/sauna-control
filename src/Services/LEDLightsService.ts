@@ -7,7 +7,7 @@ export default class LEDLightsService implements ILightsService {
     private activeColor: [number, number, number];
     private ledService: SPILed;
 
-    public LEDLightsService() {
+    public constructor() {
         this.ledService = new SPILed(0, 0, 160);
     }
 
