@@ -27,10 +27,8 @@ export default class LightsStore {
     public togglePower() {
         this.isOn = !this.isOn;
         if (this.isOn) {
-            this.lightsService.on();
             this.lightsService.setColor(0xFF, 0xFF, 0xFF);
         } else {
-            this.lightsService.setColor(0x00, 0x00, 0x00);
             this.lightsService.off();
         }
     }

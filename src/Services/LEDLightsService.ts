@@ -17,6 +17,10 @@ export default class LEDLightsService implements ILightsService {
     public autoOn(): void {
     }
 
+    public on(): void {
+      this.setColorArray(this.activeColor);
+    }
+
     public off(): void {
         this.ledService.fill(0x00, 0x00, 0x00);
     }

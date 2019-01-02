@@ -23,7 +23,7 @@ const IconLink = styled(BoxedIcon)`
 @observer
 export default class LightsScreen extends React.Component<ILightsScreenProperties, {}> {
 
-    private subscription;
+    private subscription: any;
 
     public componentWillMount(): void {
 
@@ -49,10 +49,10 @@ export default class LightsScreen extends React.Component<ILightsScreenPropertie
             <div className={this.props.className}>
                 <SectionHeader label="HELLIGKEIT" unit="%"/>
                 <BigInfo>{this.props.lightsStore.brightness}</BigInfo>
-                <IconLink name="power" size={150} color={MaterialColors.white} onClick={() => {
+                <IconLink name="power" size={100} color={MaterialColors.white} onClick={() => {
                     this.props.lightsStore.togglePower();
                     }} isEnabled={this.props.lightsStore.isOn}/>
-                <IconLink name="auto" size={150} color={MaterialColors.white} onClick={() => {
+                <IconLink name="auto" size={100} color={MaterialColors.white} onClick={() => {
                     this.props.lightsStore.toggleAuto();
                 }} isEnabled={this.props.lightsStore.isAuto}/>
             </div>

@@ -22,6 +22,9 @@ export default class SPILed {
         buffer[i+1] = b;
         buffer[i+2] = g;
     }
+
+    console.log("LED fill " + r + " " + g + " " +b);
+
     this.spiDevice.transfer(buffer, () => {
       return Promise.resolve();
     });

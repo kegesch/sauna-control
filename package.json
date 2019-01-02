@@ -33,7 +33,6 @@
     "postpackage": "electron-packager ./ --out=./builds"
   },
   "dependencies": {
-    "@types/color-convert": "^1.9.0",
     "bindings": "TooTallNate/node-bindings#pull/40/head",
     "color-convert": "^1.9.3",
     "electron": "^3.0.8",
@@ -56,6 +55,7 @@
     "@babel/plugin-proposal-decorators": "^7.1.2",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/color-convert": "^1.9.0",
     "@types/jest": "^23.3.5",
     "@types/onoff": "^3.2.1",
     "@types/pi-spi": "^0.0.27",
