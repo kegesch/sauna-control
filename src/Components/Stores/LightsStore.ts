@@ -1,4 +1,4 @@
-import {action, observable} from "mobx";
+import {action, flow, observable} from "mobx";
 import ILightsService from "../../Services/Interfaces/ILightsService";
 
 export default class LightsStore {
@@ -23,21 +23,21 @@ export default class LightsStore {
         this.isAuto = !this.isAuto;
     }
 
-    @action
-    public togglePower() {
-        this.isOn = !this.isOn;
-        if (this.isOn) {
-            this.lightsService.setColor(0xFF, 0xFF, 0xFF);
+    togglePower = flow(function * (): any {
+        if (!this.isOn) {
+            yield this.lightsService.setColor(0xFF, 0xFF, 0xFF);
         } else {
-            this.lightsService.off();
+            yield this.lightsService.off();
         }
-    }
+        this.isOn = !this.isOn;
+    });
 
-    @action
-    public setBrightness(brightness: number) {
+
+    setBrightness = flow(function * (brightness: number): any {
         if (brightness < 0 || brightness > 100) { return; }
 
+        yield this.lightsService.setBrightness(this.brightness / 100);
+
         this.brightness = brightness;
-        this.lightsService.setBrightness(this.brightness / 100);
-    }
+    });
 }
