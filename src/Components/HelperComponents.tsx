@@ -97,14 +97,14 @@ export const SectionHeader = styled(SectionHeaderUnStyled)`
     margin: 0px auto 10px auto;
 `;
 
-interface IDivButtonProperties {
+interface IDivButtonProperties extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;
     children?: any;
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const DivButton = (props: IDivButtonProperties) => {
-    return <div className={props.className} onClick={props.onClick}>
+    return <div className={props.className} onClick={props.onClick} {...props}>
         {props.children}
     </div>;
 }
@@ -113,6 +113,12 @@ export const Button = styled(DivButton)`
     display: inline;
     cursor: pointer;
 `;
+
+export interface IHoldButtonProperties {
+    action: () => void;
+    children?: any;
+    className?: string;
+}
 
 const SelectedDiv = styled("div")`
     border: 2px solid ${MaterialColors.white};

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {Button, MaterialColors} from "./HelperComponents";
 import {BoxedIcon, default as Icon} from "./Icon";
 import SystemStore from "./Stores/SystemStore";
+import HoldButton from "./HoldButton";
 
 interface INavigationProps {
     className?: string;
@@ -33,11 +34,12 @@ export default class Navigation extends React.Component<INavigationProps, {}> {
                             <span style={{color: MaterialColors.orange}}>{this.props.systemStore.errorMessage}</span>
                         </td>
                         <td>
-                            <Button onClick={() => {
+                            <HoldButton action={() => {
                                 upDown$.next("up");
-                            }}>
+                            }}
+                            >
                                 <BoxedIcon isEnabled size={this.props.iconSize} name={"up"} color={MaterialColors.white}/>
-                            </Button>
+                            </HoldButton>
                         </td>
                     </tr>
                     <tr>
@@ -53,11 +55,11 @@ export default class Navigation extends React.Component<INavigationProps, {}> {
                             <span style={{fontSize: "140%", color: MaterialColors.red}}>Hotwãve</span>
                         </td>
                         <td>
-                            <Button onClick={() => {
+                            <HoldButton action={() => {
                                 upDown$.next("down");
                             }}>
                                 <BoxedIcon isEnabled size={this.props.iconSize} name={"down"} color={MaterialColors.white}/>
-                            </Button>
+                            </HoldButton>
                         </td>
                     </tr>
                 </tbody>
