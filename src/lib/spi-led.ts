@@ -12,7 +12,9 @@ export default class SPILed {
     this.spiBus = bus;
     this.spiPort = port;
     this.ledAmount = ledAmount;
-    this.spiDevice = SPI.initialize(`/dev/spidev${bus}.${port}`)
+    this.spiDevice = SPI.initialize(`/dev/spidev${bus}.${port}`);
+    this.spiDevice.dataMode(SPI.mode.CPHA);
+    this.spiDevice.clockSpeed(1000000);
   }
 
   public async fill(r: number, g: number, b: number): Promise<void> {
@@ -24,9 +26,9 @@ export default class SPILed {
     }
 
     console.log("LED fill " + r + " " + g + " " +b);
-
-    this.spiDevice.transfer(buffer, () => {
-      return Promise.resolve();
+	
+    this.spiDevice.write(buffer, () => {
+    	return Promise.resolve();
     });
   }
 }

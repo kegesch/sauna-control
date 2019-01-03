@@ -8,7 +8,8 @@ export default class LEDLightsService implements ILightsService {
     private ledService: SPILed;
 
     public constructor() {
-        this.ledService = new SPILed(0, 0, 160);
+    	this.ledService = new SPILed(0, 0, 160);
+	this.activeColor = [0xFF, 0xFF, 0xFF];
     }
 
     public autoOff(): void {
