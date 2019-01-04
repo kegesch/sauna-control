@@ -1,6 +1,6 @@
 import {observer, Provider} from "mobx-react";
 import * as React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import {BrowserRouter, Redirect, Route} from "react-router-dom";
 import styled from "styled-components";
 import { MaterialColors} from "./Components/HelperComponents";
 import Navigation from "./Components/Navigation";
@@ -17,7 +17,7 @@ import SensorScreen from "./Screens/SensorScreen";
 import SystemScreen from "./Screens/SystemScreen";
 import TimerScreen from "./Screens/TimerScreen";
 import GPIOSensorService from "./Services/GPIOSensorService";
-import HumidityService from "./Services/HumidityService";
+import PIDHumidityService from "./Services/PIDHumidityService";
 import IHumidityService from "./Services/Interfaces/IHumidityService";
 import ILightsService from "./Services/Interfaces/ILightsService";
 import {ISensorService} from "./Services/Interfaces/ISensorService";
@@ -46,7 +46,7 @@ class App extends React.Component<IAppProps, {}> {
   private systemService: ISystemService = new SystemService();
   private sensorService: ISensorService = new GPIOSensorService( this.systemService);
   private temperatureService: ITemperatureService = new PIDTemperatureService(this.sensorService);
-  private humidityService: IHumidityService = new HumidityService(this.sensorService);
+  private humidityService: IHumidityService = new PIDHumidityService(this.sensorService);
   private lightsService: ILightsService = new LEDLightsService(this.sensorService);
 
   private stores = {
@@ -61,17 +61,16 @@ class App extends React.Component<IAppProps, {}> {
   public render(): React.ReactNode {
     let screen = (
       <div>
-        <Route exact path="/" render={() => <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>} />
+        <Route path="/" render={() => (
+          <Redirect to="/system"/>
+        )}/>
+        <Route path="/system" render={() => <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>} />
         <Route path="/lights" component={LightsScreen} />
         <Route path="/sensors" component={SensorScreen} />
         <Route path="/timers" render={() => <TimerScreen lightService={this.lightsService} />} />
         <Route path="/music" component={MusicScreen} />
       </div>
     );
-
-    if (!this.stores.systemStore.isOn) {
-      screen = <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>;
-    }
 
     return (
       <BrowserRouter>
@@ -102,13 +101,14 @@ export default styled(App)`
     left: 0;
     right: 0;
     font-family: sans-serif;
+    user-select: none;
 
     div.AppFooter {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0
-        padding: 5px;
+        padding: 5px 0px;
         width: 100%;
     }
 `;

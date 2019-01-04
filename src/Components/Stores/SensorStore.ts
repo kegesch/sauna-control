@@ -2,6 +2,8 @@ import {action, computed, observable} from "mobx";
 import IHumidityService from "../../Services/Interfaces/IHumidityService";
 import {ISensorService} from "../../Services/Interfaces/ISensorService";
 import ITemperatureService from "../../Services/Interfaces/ITemperatureService";
+import {observer} from "mobx-react";
+import ISystemService from "../../Services/Interfaces/ISystemService";
 
 export default class SensorStore {
 
@@ -33,6 +35,7 @@ export default class SensorStore {
         temperatureService: ITemperatureService,
         humidityService: IHumidityService,
         sensorService: ISensorService,
+        systemService: ISystemService
     ) {
         this.temperatureService = temperatureService;
         this.humidityService = humidityService;
@@ -43,7 +46,7 @@ export default class SensorStore {
         });
 
         this.humidityService.humidity$.subscribe({
-            error: () => console.error("Could not retrieve humidity from HumidityService."),
+            error: () => console.error("Could not retrieve humidity from PIDHumidityService."),
             next: (value: number) => this.setCurrentHumid(value),
         });
 
@@ -56,6 +59,19 @@ export default class SensorStore {
             error: () => console.error("Could not retrieve heating from SensorService."),
             next: (value: boolean) => this.setHeating(value),
         });
+
+        systemService.isOn$.subscribe({
+          error: () => console.error("Could not retrieve system status from SystemService."),
+          next: (value: boolean) => {
+            if(value) {
+              this.humidityService.setTargetHumidity(this.setPointHumid);
+              this.temperatureService.setTargetTemperature(this.setPointTemp);
+            } else {
+              this.humidityService.setTargetHumidity(0);
+              this.temperatureService.setTargetTemperature(0);
+            }
+          }
+        })
     }
 
     @action

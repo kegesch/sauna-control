@@ -25,10 +25,12 @@ export default class SPILed {
         buffer[i+2] = g;
     }
 
-    console.log("LED fill " + r + " " + g + " " +b);
-	
-    this.spiDevice.write(buffer, () => {
-    	return Promise.resolve();
+    let that = this;
+    return new Promise<void>(function (resolve, reject) {
+      that.spiDevice.write(buffer, (err, data) => {
+        if(err) reject(err);
+        resolve();
+      });
     });
   }
 }

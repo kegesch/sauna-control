@@ -1,6 +1,5 @@
 import * as Controller from "node-pid-controller";
 import * as Rx from "rxjs";
-import {Resources} from "../Model/Resources";
 import {ISensorService} from "./Interfaces/ISensorService";
 import ITemperatureService from "./Interfaces/ITemperatureService";
 
@@ -15,8 +14,6 @@ export default class PIDTemperatureService implements ITemperatureService {
     private targetTemp: number;
     private currentTemp: number;
     private timer: any;
-
-    private state: number;
 
     public constructor(sensorService: ISensorService) {
         this.sensorService = sensorService;
@@ -50,17 +47,6 @@ export default class PIDTemperatureService implements ITemperatureService {
            } else {
               that.sensorService.setHeat(false);
            }
-        }, 5 * 1000);
-    }
-
-    public getState(): number {
-        return this.state;
-    }
-
-    public setState(state: number) {
-        if (state !== Resources.State.OFF || state !== Resources.State.ON) {
-            throw new Error("State must be either On or Off");
-        }
-        this.state = state;
+        }, 1 * 1000);
     }
 }
