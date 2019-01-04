@@ -27,6 +27,8 @@ export default class GPIOSensorService implements ISensorService {
     private sensor: any;
 
     private timer: any;
+    private timerDoor: any;
+
     private fetchInterval: number = 1000 * 5; // every 5 seconds
 
     public constructor(systemService: ISystemService) {
@@ -43,9 +45,11 @@ export default class GPIOSensorService implements ISensorService {
         this.timer = setInterval(async () => {
             this.temperature$.next(await this.getCurrentTemperature());
             this.humidity$.next(await this.getHumidity());
+        }, this.fetchInterval);
+        this.timerDoor = setInterval(async () => {
             this.doorOpen$.next(this.isDoorOpen());
             this.energyOn$.next(this.isEnergyOn());
-        }, this.fetchInterval);
+        }, 200);
     }
 
     public setHeat(heat: boolean): void {
@@ -85,6 +89,7 @@ export default class GPIOSensorService implements ISensorService {
         this.evaporate.unexport();
 
         clearInterval(this.timer);
+        clearInterval(this.timerDoor);
     }
 
     private async getCurrentTemperature(): Promise<number> {

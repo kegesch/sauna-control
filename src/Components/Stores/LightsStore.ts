@@ -18,18 +18,29 @@ export default class LightsStore {
         this.lightsService = lightsService;
     }
 
-    @action
-    public toggleAuto() {
-        this.isAuto = !this.isAuto;
-    }
+    toggleAuto = flow(function * (): any {
+      if(!this.isAuto) {
+        const actualBright = yield this.lightsService.autoOn();
+        console.log(actualBright);
+        this.brightness = actualBright * 100;
+      }  else {
+        yield this.lightsService.autoOff();
+      }
+
+      this.isAuto = !this.isAuto;
+      if(this.isAuto && this.isAuto === this.isOn) this.isOn = !this.isAuto;
+    });
 
     togglePower = flow(function * (): any {
         if (!this.isOn) {
-            yield this.lightsService.setColor(0xFF, 0xFF, 0xFF);
+          const actualBright = yield this.lightsService.on();
+          console.log(actualBright);
+          this.brightness = actualBright * 100;
         } else {
             yield this.lightsService.off();
         }
         this.isOn = !this.isOn;
+        if(this.isOn && this.isAuto === this.isOn) this.isAuto = !this.isOn;
     });
 
 

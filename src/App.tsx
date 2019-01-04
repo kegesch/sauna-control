@@ -47,7 +47,7 @@ class App extends React.Component<IAppProps, {}> {
   private sensorService: ISensorService = new GPIOSensorService( this.systemService);
   private temperatureService: ITemperatureService = new PIDTemperatureService(this.sensorService);
   private humidityService: IHumidityService = new HumidityService(this.sensorService);
-  private lightsService: ILightsService = new LEDLightsService();
+  private lightsService: ILightsService = new LEDLightsService(this.sensorService);
 
   private stores = {
     dateTimeStore: new DateTimeStore(),
@@ -61,10 +61,10 @@ class App extends React.Component<IAppProps, {}> {
   public render(): React.ReactNode {
     let screen = (
       <div>
-        <Route exact path="/" component={SystemScreen} />
+        <Route exact path="/" render={() => <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>} />
         <Route path="/lights" component={LightsScreen} />
         <Route path="/sensors" component={SensorScreen} />
-        <Route path="/timers" component={TimerScreen} />
+        <Route path="/timers" render={() => <TimerScreen lightService={this.lightsService} />} />
         <Route path="/music" component={MusicScreen} />
       </div>
     );

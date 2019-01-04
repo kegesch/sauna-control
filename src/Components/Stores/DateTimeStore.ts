@@ -1,11 +1,6 @@
 import {DateTimeMomentService} from "../../Services/DateTimeMomentService";
 import {IDateTimeService} from "../../Services/Interfaces/IDateTimeService";
-import {action, computed, createAtom, flow, observable} from 'mobx';
-import {Atom} from "mobx/lib/core/atom";
-
-interface IDateTimeContainerState {
-
-}
+import {action, observable} from 'mobx';
 
 export default class DateTimeStore {
 
@@ -15,7 +10,7 @@ export default class DateTimeStore {
     @observable
     public time: string;
 
-    private timer;
+    private timer: any;
 
     private dateTimeService: IDateTimeService = new DateTimeMomentService();
 

@@ -8,6 +8,7 @@ interface ITimerSelectionProps {
     values: number[];
     color: string;
     size: number;
+    onEnd?: () => void;
 }
 
 interface ITimerSelectionState {
@@ -58,7 +59,7 @@ export default class TimerSelection extends React.Component<ITimerSelectionProps
     private onTimerEnd() {
         console.log("timer of " + this.props.values[this.state.selectedTimerIndex] + "min has ended.");
         this.setState({selectedTimerIndex: -1});
-        // TODO
+        this.props.onEnd();
     }
 
 }

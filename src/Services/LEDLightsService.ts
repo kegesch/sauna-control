@@ -1,54 +1,99 @@
 import * as convert from "color-convert";
 import ILightsService from "./Interfaces/ILightsService";
 import SPILed from "../lib/spi-led";
+import {ISensorService} from "./Interfaces/ISensorService";
 
 export default class LEDLightsService implements ILightsService {
 
     private activeColor: [number, number, number];
     private ledService: SPILed;
+    private status: "on" | "off" = "off";
+    private statusAuto: "on" | "off" = "off";
+    private brightness: number = 1.0;
+    private doorOpen: boolean = false;
 
-    public constructor() {
+    private WARMWHITE: [number, number, number] = [0xFF, 0xF0, 0xB5];
+    private COLDWHITE: [number, number, number] = [0xFF, 0xFF, 0xFF];
+
+    public constructor(sensorService: ISensorService) {
     	this.ledService = new SPILed(0, 0, 160);
-	this.activeColor = [0xFF, 0xFF, 0xFF];
+	    this.activeColor = this.COLDWHITE;
+
+	    sensorService.doorOpen$.subscribe({
+        error: (err) => {console.log("Error on retrieving next: " + err); },
+        next: (open) => {
+          if (open === true && !this.doorOpen) {
+            this.fadeColor(LEDLightsService.calcColorWithBrightness(this.activeColor, this.brightness), this.COLDWHITE, 500)
+          } else if(open === false && this.doorOpen) {
+            this.fadeColor(this.COLDWHITE, LEDLightsService.calcColorWithBrightness(this.activeColor, this.brightness), 500);
+          }
+          this.doorOpen = open;
+        },
+      });
     }
 
-    public autoOff(): void {
+    public async autoOff(): Promise<void> {
+      this.statusAuto = "off";
+      await this.ledService.fill(0x00, 0x00, 0x00);
     }
 
-    public autoOn(): void {
+    public async autoOn(): Promise<number> {
+      this.statusAuto = "on";
+      this.status = "off";
+      this.activeColor = this.WARMWHITE;
+      this.brightness = 0.8;
+
+      await this.update();
+      return this.brightness;
     }
 
-    public async on(): Promise<void> {
-      await this.setColorArray(this.activeColor);
+    public async on(): Promise<number> {
+      this.status = "on";
+      this.statusAuto = "off";
+      this.activeColor = [0xFF, 0xFF, 0xFF];
+      this.brightness = 1;
+      await this.update();
+      return this.brightness;
     }
 
     public async off(): Promise<void> {
+        this.status = "off";
         await this.ledService.fill(0x00, 0x00, 0x00);
     }
 
     async setColor(red: number, green: number, blue: number) {
-      await this.ledService.fill(red, green, blue);
       this.activeColor = [red, green, blue];
+      await this.update();
     }
 
-    public blinkTimer(red: number, green: number, blue: number, times: number, duration: number) {
-        this.fadeColor(this.activeColor, [red, green, blue], 800);
+    public blinkTimer(color: [number, number, number], times: number, duration: number) {
+      for (let i = 0; i < times; i++) {
         setTimeout(() => {
-            this.fadeColor([red, green, blue], this.activeColor, 800);
-        }, 800);
+          this.fadeColor(LEDLightsService.calcColorWithBrightness(this.activeColor, this.brightness), color, duration);
+          setTimeout(() => {
+              this.fadeColor(color, LEDLightsService.calcColorWithBrightness(this.activeColor, this.brightness), duration);
+          }, duration);
+        }, i * duration * 2);
+      }
     }
 
     public async setBrightness(brightness: number) {
       if (!(brightness <= 1.0 && brightness >= 0.0)) {
         throw new Error("Brightness must be in between 0.0 and 1.0.");
       }
+      this.brightness = brightness;
+      await this.update();
+    }
 
-      const hslActiveColor = convert.rgb.hsl(this.activeColor);
-      hslActiveColor[2] = 255 * brightness;
-      const activeRgbColorWithBrightness = convert.hsl.rgb(hslActiveColor);
+    private async update() {
+      if(!(this.status == "on" || this.statusAuto == "on")) return;
+      await this.setColorArray(LEDLightsService.calcColorWithBrightness(this.activeColor, this.brightness));
+    }
 
-      await this.setColorArray(activeRgbColorWithBrightness);
-      this.activeColor = activeRgbColorWithBrightness;
+    private static calcColorWithBrightness(color: [number, number, number], brightness: number) {
+      const hslActiveColor = convert.rgb.hsl(color);
+      hslActiveColor[2] = 100 * brightness;
+      return convert.hsl.rgb(hslActiveColor);
     }
 
     private async setColorArray(color: number[]) {
@@ -64,13 +109,13 @@ export default class LEDLightsService implements ILightsService {
         for (let i = 0; i < steps; i++) {
             const factor = i / steps;
             setTimeout(async () => {
-                const interpolatedColor = this.interpolateColor(color1, color2, factor);
+                const interpolatedColor = LEDLightsService.interpolateColor(color1, color2, factor);
                 await this.setColorArray(interpolatedColor);
             }, durationStep * (i + 1));
         }
     }
 
-    private interpolateColor(color1: number[], color2: number[], factor: number): number[] {
+    private static interpolateColor(color1: number[], color2: number[], factor: number): number[] {
         if (arguments.length < 3) { factor = 0.5; }
         const result = color1.slice();
         for (let i = 0; i < 3; i++) {

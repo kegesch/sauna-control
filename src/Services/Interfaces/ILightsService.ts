@@ -4,6 +4,6 @@ export default interface ILightsService {
     on(): void;
     autoOn(): void;
     autoOff(): void;
-    blinkTimer(red: number, green: number, blue: number, times: number, duration: number): void;
+    blinkTimer(color: [number, number, number], times: number, duration: number): void;
     setBrightness(brightness: number): void;
 }
