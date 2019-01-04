@@ -3,6 +3,7 @@ import * as React from "react";
 import {BigInfo, SectionHeader} from "../Components/HelperComponents";
 import {upDown$} from "../Components/Navigation";
 import SensorStore from "../Components/Stores/SensorStore";
+import {Subscription} from "rxjs";
 
 interface ISensorScreenProperties {
     className?: string;
@@ -13,7 +14,7 @@ interface ISensorScreenProperties {
 @observer
 export default class SensorScreen extends React.Component<ISensorScreenProperties, {}> {
 
-    private subscription;
+    private subscription: Subscription;
 
     public componentWillMount(): void {
 
@@ -57,7 +58,7 @@ export default class SensorScreen extends React.Component<ISensorScreenPropertie
     private _selectSetPoint(setPoint: "temp" | "humid") {
         const selected = this.props.sensorStore.selectedSetPoint;
 
-        let select = null;
+        let select: "temp" | "humid" | null = null;
         if (selected !== setPoint) { select = setPoint; }
 
         this.props.sensorStore.selectSetPoint(select);

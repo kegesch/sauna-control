@@ -67,8 +67,8 @@ export default class SensorStore {
               this.humidityService.setTargetHumidity(this.setPointHumid);
               this.temperatureService.setTargetTemperature(this.setPointTemp);
             } else {
-              this.humidityService.setTargetHumidity(0);
-              this.temperatureService.setTargetTemperature(0);
+              this.humidityService.stop()
+              this.temperatureService.stop()
             }
           }
         })

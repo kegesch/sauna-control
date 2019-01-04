@@ -40,6 +40,7 @@ export default class Icon extends React.Component<IIconProps, {}> {
 interface IBoxedIconProps extends IIconProps {
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
     isEnabled: boolean;
+    isWarning?: boolean;
 }
 
 export const BoxedIcon = (props: IBoxedIconProps) => {

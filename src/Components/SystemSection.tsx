@@ -15,7 +15,7 @@ interface ISystemSectionProps {
 const StyledIcon = styled(BoxedIcon)`
     margin: 5px;
     display: inline;
-    fill: ${(props) => props.isEnabled ? MaterialColors.green : MaterialColors.white};
+    fill: ${(props) => props.isEnabled ? MaterialColors.green : (props.isWarning ? MaterialColors.orange : MaterialColors.white)};
 `;
 
 @inject("lightsStore", "sensorStore")
@@ -26,7 +26,7 @@ class SystemSection extends React.Component<ISystemSectionProps, {}> {
         return (
             <div className={this.props.className}>
                 <Separator />
-                <StyledIcon size={20} name="lightbulb" color={MaterialColors.white} isEnabled={this.props.lightsStore.isOn}/>
+                <StyledIcon size={20} name="lightbulb" color={MaterialColors.white} isEnabled={this.props.lightsStore.isOn} isWarning={this.props.lightsStore.isAuto}/>
                 <StyledIcon size={25} name="tilde" color={MaterialColors.white} isEnabled={this.props.sensorStore.isHeating} />
                 <StyledIcon size={20} name="tint" color={MaterialColors.white} isEnabled={this.props.sensorStore.isEvaporating} />
                 <StyledIcon size={22} name="volume" color={MaterialColors.white} isEnabled={false} />

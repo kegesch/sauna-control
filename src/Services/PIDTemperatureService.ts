@@ -12,7 +12,7 @@ export default class PIDTemperatureService implements ITemperatureService {
     private pid: Controller;
 
     private targetTemp: number;
-    private currentTemp: number;
+    private currentTemp: number = 21.5;
     private timer: any;
 
     public constructor(sensorService: ISensorService) {
@@ -21,7 +21,7 @@ export default class PIDTemperatureService implements ITemperatureService {
         this.pid = new Controller({
             dt: 1,
             k_d: 0.01,
-            k_i: 0.01,
+            k_i: 0.00,
             k_p: 0.25,
         });
 
@@ -42,11 +42,17 @@ export default class PIDTemperatureService implements ITemperatureService {
         const that = this;
         this.timer = setInterval(() => {
            const correction = that.pid.update(that.currentTemp);
+           console.log("updating tempcor " + correction + " from "+ this.currentTemp + " to " + this.targetTemp);
            if (correction > 0) {
               that.sensorService.setHeat(true);
            } else {
               that.sensorService.setHeat(false);
            }
         }, 1 * 1000);
+    }
+
+    public stop() {
+      this.sensorService.setHeat(false);
+      clearInterval(this.timer);
     }
 }

@@ -28,12 +28,12 @@ export default class TimerScreen extends React.Component<ITimerScreenProps, {}> 
             <SectionHeader label="Timer" unit="min"/>
             <div style={{width: "90%", margin: "0 auto"}}>
                 <StyledTimerSelection
-                  values={[1, 8, 10, 12]}
+                  values={[5, 8, 10, 12]}
                   color={MaterialColors.red}
                   size={117}
                   onEnd={() => this.props.lightService.blinkTimer(red, 2, 800)}/>
                 <StyledTimerSelection
-                  values={[2, 8, 10, 12]}
+                  values={[5, 8, 10, 12]}
                   color={MaterialColors.green}
                   size={117}
                   onEnd={() => this.props.lightService.blinkTimer(green, 2, 800)}/>

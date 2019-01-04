@@ -43,7 +43,7 @@ export default class Navigation extends React.Component<INavigationProps, {}> {
                         </td>
                     </tr>
                     <tr>
-                        <td><Button onClick={() => this.toggleSystemState()}><StyledIcon size={this.props.iconSize} name="power" color={this.props.systemStore.isOn ? MaterialColors.green : MaterialColors.red}/></Button></td>
+                      <td><Button onClick={() => this.toggleSystemState()}><Link to="/system"><StyledIcon size={this.props.iconSize} name="power" color={this.props.systemStore.isOn ? MaterialColors.green : MaterialColors.red}/></Link></Button></td>
                         <td><Link to="/sensors"><StyledIcon size={this.props.iconSize} name="thermometer" color={MaterialColors.white} /></Link></td>
                         <td><Link to="/lights"><StyledIcon size={this.props.iconSize} name="lightbulb" color={MaterialColors.white}/></Link></td>
                         <td><Link to="/timers"><StyledIcon size={this.props.iconSize} name="timer" color={MaterialColors.white}/></Link></td>

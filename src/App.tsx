@@ -1,6 +1,6 @@
 import {observer, Provider} from "mobx-react";
 import * as React from "react";
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
+import {HashRouter, Redirect, Route} from "react-router-dom";
 import styled from "styled-components";
 import { MaterialColors} from "./Components/HelperComponents";
 import Navigation from "./Components/Navigation";
@@ -53,7 +53,7 @@ class App extends React.Component<IAppProps, {}> {
     dateTimeStore: new DateTimeStore(),
     lightsStore: new LightsStore(this.lightsService),
     musicStore: new MusicStore(),
-    sensorStore: new SensorStore(this.temperatureService, this.humidityService, this.sensorService),
+    sensorStore: new SensorStore(this.temperatureService, this.humidityService, this.sensorService, this.systemService),
     systemStore: new SystemStore(this.systemService, this.sensorService),
     weatherStore: new WeatherStore(),
   };
@@ -61,7 +61,7 @@ class App extends React.Component<IAppProps, {}> {
   public render(): React.ReactNode {
     let screen = (
       <div>
-        <Route path="/" render={() => (
+        <Route exact path="/" render={() => (
           <Redirect to="/system"/>
         )}/>
         <Route path="/system" render={() => <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>} />
@@ -72,8 +72,12 @@ class App extends React.Component<IAppProps, {}> {
       </div>
     );
 
+    if (!this.stores.systemStore.isOn) {
+      screen = <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>;
+    }
+
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Provider {...this.stores}>
           <div className={this.props.className}>
             {screen}
@@ -83,7 +87,7 @@ class App extends React.Component<IAppProps, {}> {
             </div>
           </div>
         </Provider>
-      </BrowserRouter>);
+      </HashRouter>);
   }
 
 }

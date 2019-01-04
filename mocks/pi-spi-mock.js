@@ -33,6 +33,7 @@ exports.initialize = function (dev) {
 
 
   function _transfer(w,r,cb) {
+    cb();
   }
 
   spi.write = function (writebuf, cb) {

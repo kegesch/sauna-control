@@ -10,7 +10,7 @@ export default class PIDHumidityService implements IHumidityService {
     private pid: Controller;
     private sensorService: ISensorService;
     private targetHumid: number;
-    private currentHumid: number;
+    private currentHumid: number = 50;
     private timer: any;
 
     constructor(sensorService: ISensorService) {
@@ -19,7 +19,7 @@ export default class PIDHumidityService implements IHumidityService {
       this.pid = new Controller({
         dt: 1,
         k_d: 0.01,
-        k_i: 0.01,
+        k_i: 0.0,
         k_p: 0.25,
       });
 
@@ -47,5 +47,10 @@ export default class PIDHumidityService implements IHumidityService {
           this.sensorService.setEvaporate(false);
         }
       }, 1 * 1000);
+    }
+
+    public stop() {
+      this.sensorService.setEvaporate(false);
+      clearInterval(this.timer);
     }
 }
