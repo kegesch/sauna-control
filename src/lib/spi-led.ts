@@ -1,7 +1,6 @@
 import * as SPI from "pi-spi";
 
 export default class SPILed {
-
   private readonly spiBus: number = 0;
   private readonly spiPort: number = 0;
   private readonly ledAmount: number = 0;
@@ -18,17 +17,17 @@ export default class SPILed {
   }
 
   public async fill(r: number, g: number, b: number): Promise<void> {
-    const buffer = Buffer.alloc(this.ledAmount*3);
-    for (let i = 0; i < this.ledAmount * 3; i+=3) {
-        buffer[i] = r;
-        buffer[i+1] = b;
-        buffer[i+2] = g;
+    const buffer = Buffer.alloc(this.ledAmount * 3);
+    for (let i = 0; i < this.ledAmount * 3; i += 3) {
+      buffer[i] = r;
+      buffer[i + 1] = b;
+      buffer[i + 2] = g;
     }
 
     let that = this;
-    return new Promise<void>(function (resolve, reject) {
+    return new Promise<void>(function(resolve, reject) {
       that.spiDevice.write(buffer, (err, data) => {
-        if(err) reject(err);
+        if (err) reject(err);
         resolve();
       });
     });

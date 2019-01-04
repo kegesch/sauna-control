@@ -1,4 +1,4 @@
 export interface IDateTimeService {
-    getCurrentTime(): string;
-    getCurrentDate(): string;
+  getCurrentTime(): string;
+  getCurrentDate(): string;
 }

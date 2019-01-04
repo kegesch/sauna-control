@@ -1,8 +1,10 @@
 import * as React from "react";
-import {Button, IHoldButtonProperties} from "./HelperComponents";
+import { Button, IHoldButtonProperties } from "./HelperComponents";
 
-export default class HoldButton extends React.Component<IHoldButtonProperties, {}> {
-
+export default class HoldButton extends React.Component<
+  IHoldButtonProperties,
+  {}
+> {
   private timeout: any;
   private start: number;
   private speedup: number;
@@ -24,19 +26,21 @@ export default class HoldButton extends React.Component<IHoldButtonProperties, {
     this.start = 400;
     this.speedup = 2;
     this.minDelay = 80;
-    clearTimeout(this.timeout)
+    clearTimeout(this.timeout);
   }
 
   public render() {
-      return <Button
+    return (
+      <Button
         onMouseDown={() => {
-          this.onHold()
+          this.onHold();
         }}
         onMouseUp={() => {
           this.reset();
         }}
       >
-          {this.props.children}
+        {this.props.children}
       </Button>
+    );
   }
 }

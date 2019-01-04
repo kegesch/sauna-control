@@ -4,10 +4,10 @@ Minimal Electron, React, TypeScript and Webpack boilerplate to help you get star
 
 ### Table of contents
 
-* [Install](#install)
-* [Usage](#usage)
-* [Code of Conduct](#code-of-conduct)
-* [License](#license)
+- [Install](#install)
+- [Usage](#usage)
+- [Code of Conduct](#code-of-conduct)
+- [License](#license)
 
 ### Install
 
@@ -22,7 +22,9 @@ git clone --depth=1 https://github.com/Y0nnyy/electron-react-boilerplate.git
 ```
 npm install
 ```
+
 or
+
 ```
 yarn install
 ```
@@ -34,7 +36,9 @@ yarn install
 ```
 npm run start
 ```
+
 or
+
 ```
 yarn start
 ```
@@ -44,7 +48,9 @@ yarn start
 ```
 npm run package
 ```
+
 or
+
 ```
 yarn package
 ```
@@ -54,15 +60,19 @@ yarn package
 ```
 npm run build
 ```
+
 or
+
 ```
 yarn build
 ```
 
 #### Test the app (after `npm run build` || `yarn run build`)
+
 ```
 npm run prod
 ```
+
 ```
 yarn prod
 ```
@@ -70,4 +80,3 @@ yarn prod
 ### Code of Conduct
 
 [Contributor Code of Conduct](code-of-conduct.md). By participating in this project you agree to abide by its terms.
-

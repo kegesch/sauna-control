@@ -22,20 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-var i2c = require('i2c-bus');
-var fs=require('fs');
+var i2c = require("i2c-bus");
+var fs = require("fs");
 //var Promise = require("bluebird");
 
-var MAX_TEMP_CONVERSION     = 50;   // milliseconds
-var MAX_HUMI_CONVERSION     = 16;   // ms
-var MAX_RESET_DELAY         = 15;   // ms
+var MAX_TEMP_CONVERSION = 50; // milliseconds
+var MAX_HUMI_CONVERSION = 16; // ms
+var MAX_RESET_DELAY = 15; // ms
 
-var HTU21D_I2CADDR          = 0x40;
-var HTU21D_READTEMP_NH      = 0xF3;
-var HTU21D_READHUMI_NH      = 0xF5;
-var HTU21D_WRITEREG         = 0xE6;
-var HTU21D_READREG          = 0xE7;
-var HTU21D_RESET            = 0xFE;
+var HTU21D_I2CADDR = 0x40;
+var HTU21D_READTEMP_NH = 0xf3;
+var HTU21D_READHUMI_NH = 0xf5;
+var HTU21D_WRITEREG = 0xe6;
+var HTU21D_READREG = 0xe7;
+var HTU21D_RESET = 0xfe;
 
 var i2cbus = 0;
 
@@ -43,8 +43,7 @@ var i2cbus = 0;
 // on clock stretching/hold  which seems to be a problem the
 // raspberry pi i2c controller.
 
-const htu21d = function (i2copts_arg) {
-};
+const htu21d = function(i2copts_arg) {};
 
 htu21d.prototype.readTemperature = function(callback) {
   callback(21.5);
@@ -53,8 +52,5 @@ htu21d.prototype.readTemperature = function(callback) {
 htu21d.prototype.readHumidity = function(callback) {
   callback(50.0);
 };
-
-
-
 
 module.exports = htu21d;

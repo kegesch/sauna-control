@@ -1,62 +1,50 @@
 export class Gpio {
+  public static HIGH = 1;
+  public static LOW = 0;
 
-    public static HIGH = 1;
-    public static LOW = 0;
+  constructor(gpio, direction) {}
 
-    constructor(gpio, direction) {
-    }
+  public read(callback) {
+    callback();
+  }
 
-    public read(callback) {
-        callback();
-    }
+  public readSync() {
+    return 1;
+  }
 
-    public readSync() {
-        return 1;
-    }
+  public write(value, callback) {
+    callback();
+  }
 
-    public write(value, callback) {
-        callback();
-    }
+  public writeSync(value) {}
 
-    public writeSync(value) {
-    }
+  public watch(callback) {}
 
-    public watch(callback) {
-    }
+  public unwatch(callback) {}
 
-    public unwatch(callback) {
-    }
+  public unwatchAll() {}
 
-    public unwatchAll() {
-    }
+  public direction() {
+    return undefined;
+  }
 
-    public direction() {
-        return undefined;
-    }
+  public setDirection(direction) {}
 
-    public setDirection(direction) {
-    }
+  public edge() {
+    return undefined;
+  }
 
-    public edge() {
-        return undefined;
-    }
+  public setEdge(edge) {}
 
-    public setEdge(edge) {
-    }
+  public activeLow() {
+    return false;
+  }
 
-    public activeLow() {
-        return false;
-    }
+  public setActiveLow(invert) {}
 
-    public setActiveLow(invert) {
-    }
+  public unexport() {}
 
-    public unexport() {
-
-    }
-
-    static get accessible() {
-        return true;
-    }
+  static get accessible() {
+    return true;
+  }
 }
-

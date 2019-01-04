@@ -1,8 +1,8 @@
-import {observer, Provider} from "mobx-react";
+import { observer, Provider } from "mobx-react";
 import * as React from "react";
-import {HashRouter, Redirect, Route} from "react-router-dom";
+import { HashRouter, Redirect, Route } from "react-router-dom";
 import styled from "styled-components";
-import { MaterialColors} from "./Components/HelperComponents";
+import { MaterialColors } from "./Components/HelperComponents";
 import Navigation from "./Components/Navigation";
 import DateTimeStore from "./Components/Stores/DateTimeStore";
 import LightsStore from "./Components/Stores/LightsStore";
@@ -20,7 +20,7 @@ import GPIOSensorService from "./Services/GPIOSensorService";
 import PIDHumidityService from "./Services/PIDHumidityService";
 import IHumidityService from "./Services/Interfaces/IHumidityService";
 import ILightsService from "./Services/Interfaces/ILightsService";
-import {ISensorService} from "./Services/Interfaces/ISensorService";
+import { ISensorService } from "./Services/Interfaces/ISensorService";
 import ISystemService from "./Services/Interfaces/ISystemService";
 import ITemperatureService from "./Services/Interfaces/ITemperatureService";
 import LEDLightsService from "./Services/LEDLightsService";
@@ -32,48 +32,74 @@ interface IAppProps {
 }
 
 const StyledNavigation = styled(Navigation)`
-    width: 100%;
+  width: 100%;
 
-    td {
-        text-align: center;
-        vertical-align: middle;
-    }
+  td {
+    text-align: center;
+    vertical-align: middle;
+  }
 `;
 
 @observer
 class App extends React.Component<IAppProps, {}> {
-
   private systemService: ISystemService = new SystemService();
-  private sensorService: ISensorService = new GPIOSensorService( this.systemService);
-  private temperatureService: ITemperatureService = new PIDTemperatureService(this.sensorService);
-  private humidityService: IHumidityService = new PIDHumidityService(this.sensorService);
-  private lightsService: ILightsService = new LEDLightsService(this.sensorService);
+  private sensorService: ISensorService = new GPIOSensorService(
+    this.systemService
+  );
+  private temperatureService: ITemperatureService = new PIDTemperatureService(
+    this.sensorService
+  );
+  private humidityService: IHumidityService = new PIDHumidityService(
+    this.sensorService
+  );
+  private lightsService: ILightsService = new LEDLightsService(
+    this.sensorService
+  );
 
   private stores = {
     dateTimeStore: new DateTimeStore(),
     lightsStore: new LightsStore(this.lightsService),
     musicStore: new MusicStore(),
-    sensorStore: new SensorStore(this.temperatureService, this.humidityService, this.sensorService, this.systemService),
+    sensorStore: new SensorStore(
+      this.temperatureService,
+      this.humidityService,
+      this.sensorService,
+      this.systemService
+    ),
     systemStore: new SystemStore(this.systemService, this.sensorService),
-    weatherStore: new WeatherStore(),
+    weatherStore: new WeatherStore()
   };
 
   public render(): React.ReactNode {
     let screen = (
       <div>
-        <Route exact path="/" render={() => (
-          <Redirect to="/system"/>
-        )}/>
-        <Route path="/system" render={() => <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>} />
+        <Route exact path="/" render={() => <Redirect to="/system" />} />
+        <Route
+          path="/system"
+          render={() => (
+            <SystemScreen
+              dateTimeStore={this.stores.dateTimeStore}
+              weatherStore={this.stores.weatherStore}
+            />
+          )}
+        />
         <Route path="/lights" component={LightsScreen} />
         <Route path="/sensors" component={SensorScreen} />
-        <Route path="/timers" render={() => <TimerScreen lightService={this.lightsService} />} />
+        <Route
+          path="/timers"
+          render={() => <TimerScreen lightService={this.lightsService} />}
+        />
         <Route path="/music" component={MusicScreen} />
       </div>
     );
 
     if (!this.stores.systemStore.isOn) {
-      screen = <SystemScreen dateTimeStore={this.stores.dateTimeStore} weatherStore={this.stores.weatherStore}/>;
+      screen = (
+        <SystemScreen
+          dateTimeStore={this.stores.dateTimeStore}
+          weatherStore={this.stores.weatherStore}
+        />
+      );
     }
 
     return (
@@ -87,9 +113,9 @@ class App extends React.Component<IAppProps, {}> {
             </div>
           </div>
         </Provider>
-      </HashRouter>);
+      </HashRouter>
+    );
   }
-
 }
 
 export default styled(App)`
