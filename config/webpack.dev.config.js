@@ -15,7 +15,9 @@ const config = {
   resolve: {
     alias: {
       'i2c-bus': path.resolve(__dirname, '../mocks/i2c-bus-mock.ts'),
-      'onoff': path.resolve(__dirname, '../mocks/onoff-mock.ts')
+      'htu21d-i2c': path.resolve(__dirname, '../mocks/htu21d-mock.js'),
+      'onoff': path.resolve(__dirname, '../mocks/onoff-mock.ts'),
+      'pi-spi': path.resolve(__dirname, '../mocks/pi-spi-mock.js')
     }
   },
   devtool: 'cheap-source-map',

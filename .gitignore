@@ -2,6 +2,11 @@
 ##########################
 builds/
 
+# npm #
+#######
+package-lock.json # yarn is used
+
+
 # Development folders and files #
 #################################
 .tmp/

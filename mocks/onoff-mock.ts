@@ -11,7 +11,7 @@ export class Gpio {
     }
 
     public readSync() {
-        return GPIO.HIGH;
+        return 1;
     }
 
     public write(value, callback) {

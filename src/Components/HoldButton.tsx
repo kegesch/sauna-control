@@ -11,21 +11,33 @@ export default class HoldButton extends React.Component<IHoldButtonProperties, {
   constructor(props: IHoldButtonProperties) {
     super(props);
 
-    this.start = 400;
-    this.speedup = 2;
-    this.minDelay = 80;
+    this.reset();
   }
 
   private onHold() {
+    console.log("hold")
     this.props.action();
-    this.timeout = setTimeout(this.onHold, this.start);
+    this.timeout = setTimeout(() => this.onHold(), this.start);
     this.start = Math.max(this.start / this.speedup, this.minDelay);
+  }
+
+  private reset() {
+    this.start = 400;
+    this.speedup = 2;
+    this.minDelay = 80;
+    clearTimeout(this.timeout)
   }
 
   public render() {
       return <Button
-        onMouseDown={() => this.onHold()}
-        onMouseUp={() => clearTimeout(this.timeout)}
+        onMouseDown={() => {
+          console.log("down");
+          this.onHold()
+        }}
+        onMouseUp={() => {
+          console.log("up");
+          this.reset();
+        }}
       >
           {this.props.children}
       </Button>
