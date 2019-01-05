@@ -11,7 +11,7 @@ export default class LEDLightsService implements ILightsService {
   private brightness: number = 1.0;
   private doorOpen: boolean = false;
 
-  private WARMWHITE: [number, number, number] = [0xff, 0xf0, 0xb5];
+  private WARMWHITE: [number, number, number] = [0xfc, 0xc1, 0x70];
   private COLDWHITE: [number, number, number] = [0xff, 0xff, 0xff];
 
   public constructor(sensorService: ISensorService) {
@@ -132,9 +132,10 @@ export default class LEDLightsService implements ILightsService {
     color: [number, number, number],
     brightness: number
   ) {
-    const hslActiveColor = convert.rgb.hsl(color);
-    hslActiveColor[2] = 100 * brightness;
-    return convert.hsl.rgb(hslActiveColor);
+    //const hslActiveColor = convert.rgb.hsl(color);
+    //hslActiveColor[2] = 100 * brightness;
+    //return convert.hsl.rgb(hslActiveColor);
+    return [color[0] * brightness, color[1] * brightness, color[2] * brightness]
   }
 
   private async setColorArray(color: number[]) {
