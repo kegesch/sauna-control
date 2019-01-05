@@ -11,7 +11,7 @@ export default class LEDLightsService implements ILightsService {
   private brightness: number = 1.0;
   private doorOpen: boolean = false;
 
-  private WARMWHITE: [number, number, number] = [0xfc, 0xc1, 0x70];
+  private WARMWHITE: [number, number, number] = [0xff, 0xbf, 0x0b];
   private COLDWHITE: [number, number, number] = [0xff, 0xff, 0xff];
 
   public constructor(sensorService: ISensorService) {
