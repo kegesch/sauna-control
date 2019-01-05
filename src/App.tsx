@@ -71,6 +71,7 @@ class App extends React.Component<IAppProps, {}> {
   };
 
   public render(): React.ReactNode {
+    let timerscreen = <TimerScreen lightService={this.lightsService} />;
     let screen = (
       <div>
         <Route exact path="/" render={() => <Redirect to="/system" />} />
@@ -87,7 +88,7 @@ class App extends React.Component<IAppProps, {}> {
         <Route path="/sensors" component={SensorScreen} />
         <Route
           path="/timers"
-          render={() => <TimerScreen lightService={this.lightsService} />}
+          render={() => timerscreen}
         />
         <Route path="/music" component={MusicScreen} />
       </div>
