@@ -2,7 +2,7 @@ import { inject, observer } from "mobx-react";
 import * as React from "react";
 import styled from "styled-components";
 import {
-  BigInfo,
+  BigInfo, ColorBox,
   MaterialColors,
   SectionHeader
 } from "../Components/HelperComponents";
@@ -17,7 +17,6 @@ interface ILightsScreenProperties {
 
 const IconLink = styled(BoxedIcon)`
   display: block;
-  margin: 0 auto;
   margin-top: 10px;
   margin-bottom: 10px;
   fill: ${props =>
@@ -60,24 +59,37 @@ export default class LightsScreen extends React.Component<
       <div className={this.props.className}>
         <SectionHeader label="HELLIGKEIT" unit="%" />
         <BigInfo>{this.props.lightsStore.brightness}</BigInfo>
-        <IconLink
-          name="power"
-          size={100}
-          color={MaterialColors.white}
-          onClick={() => {
-            this.props.lightsStore.togglePower();
-          }}
-          isEnabled={this.props.lightsStore.isOn}
-        />
-        <IconLink
-          name="auto"
-          size={100}
-          color={MaterialColors.white}
-          onClick={() => {
-            this.props.lightsStore.toggleAuto();
-          }}
-          isEnabled={this.props.lightsStore.isAuto}
-        />
+        <div style={{display: 'flex', flex: 'row', justifyContent: 'center'}}>
+          {
+            this.props.lightsStore.colors.map((color, index) =>
+              <ColorBox
+                key={index}
+                size={50}
+                icolor={color}
+                selected={this.props.lightsStore.selectedColorIndex == index}
+                onClick={() => {this.props.lightsStore.selectColor(index)}} />)
+          }
+        </div>
+        <div style={{display: 'flex', flex: 'row', justifyContent: 'center', marginTop: 20}}>
+          <IconLink
+            name="power"
+            size={130}
+            color={MaterialColors.white}
+            onClick={() => {
+              this.props.lightsStore.togglePower();
+            }}
+            isEnabled={this.props.lightsStore.isOn}
+          />
+          <IconLink
+            name="auto"
+            size={130}
+            color={MaterialColors.white}
+            onClick={() => {
+              this.props.lightsStore.toggleAuto();
+            }}
+            isEnabled={this.props.lightsStore.isAuto}
+          />
+        </div>
       </div>
     );
   }

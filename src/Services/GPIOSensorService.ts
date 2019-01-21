@@ -63,13 +63,12 @@ export default class GPIOSensorService implements ISensorService {
       this.heatPhase3.writeSync(0);
       this.heating$.next(false);
     }
-
     this.MUTEX = heat;
   }
 
   public setEvaporate(evaporate: boolean): void {
     if (
-      this.MUTEX &&
+      !this.MUTEX &&
       this.systemService.systemState === "on" &&
       evaporate &&
       !this.isDoorOpen()

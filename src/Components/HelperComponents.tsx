@@ -8,6 +8,9 @@ interface IColorPalette {
   red: string;
   blue: string;
   orange: string;
+  purple: string;
+  ledBlue: string;
+  ledRed: string;
 }
 
 export const MaterialColors: IColorPalette = {
@@ -16,7 +19,10 @@ export const MaterialColors: IColorPalette = {
   green: "#8BC34A",
   orange: "#FF9800",
   red: "#F44336",
-  white: "#EFF4FF"
+  white: "#EFF4FF",
+  purple: "#D900FF",
+  ledBlue: "#005AE0",
+  ledRed: "#FF0000",
 };
 
 export const Separator = styled.div`
@@ -142,3 +148,24 @@ export const SelectableDiv = (props: ISelectableDivProperties) => {
     return <SelectedDiv onClick={props.onClick}>{props.children}</SelectedDiv>;
   }
 };
+
+interface IColorBoxProperties extends IDivButtonProperties {
+  icolor: string;
+  size: number;
+  selected?: boolean;
+}
+
+const UnstyledColorBox = (props: IColorBoxProperties) => {
+  return (
+    <div className={props.className} onClick={props.onClick} {...props}>
+      {props.children}
+    </div>
+  );
+};
+export const ColorBox = styled(UnstyledColorBox)`
+  background-color: ${props => props.icolor};
+  border-radius: 8px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  ${props => props.selected ? "border: 2px solid " + MaterialColors.green + "; margin: 8px;" : "margin: 10px;"}
+`;

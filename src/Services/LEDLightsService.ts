@@ -4,7 +4,6 @@ import SPILed from "../lib/spi-led";
 import { ISensorService } from "./Interfaces/ISensorService";
 
 export default class LEDLightsService implements ILightsService {
-  private activeColor: [number, number, number];
   private ledService: SPILed;
   private status: "on" | "off" = "off";
   private statusAuto: "on" | "off" = "off";
@@ -13,6 +12,7 @@ export default class LEDLightsService implements ILightsService {
 
   private WARMWHITE: [number, number, number] = [0xfc, 0xc1, 0x70];
   private COLDWHITE: [number, number, number] = [0xff, 0xff, 0xff];
+  private activeColor: [number, number, number] = this.COLDWHITE;
 
   public constructor(sensorService: ISensorService) {
     this.ledService = new SPILed(0, 0, 160);
@@ -65,7 +65,6 @@ export default class LEDLightsService implements ILightsService {
   public async on(): Promise<number> {
     this.status = "on";
     this.statusAuto = "off";
-    this.activeColor = [0xff, 0xff, 0xff];
     this.brightness = 1;
     await this.update();
     return this.brightness;
