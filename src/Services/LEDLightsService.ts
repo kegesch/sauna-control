@@ -1,4 +1,3 @@
-import * as convert from "color-convert";
 import ILightsService from "./Interfaces/ILightsService";
 import SPILed from "../lib/spi-led";
 import { ISensorService } from "./Interfaces/ISensorService";
@@ -131,9 +130,6 @@ export default class LEDLightsService implements ILightsService {
     color: [number, number, number],
     brightness: number
   ) {
-    //const hslActiveColor = convert.rgb.hsl(color);
-    //hslActiveColor[2] = 100 * brightness;
-    //return convert.hsl.rgb(hslActiveColor);
     return [color[0] * brightness, color[1] * brightness, color[2] * brightness]
   }
 
