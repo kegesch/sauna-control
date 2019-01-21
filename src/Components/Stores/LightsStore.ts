@@ -1,6 +1,7 @@
 import {action, computed, flow, observable} from "mobx";
 import ILightsService from "../../Services/Interfaces/ILightsService";
 import {MaterialColors} from "../HelperComponents";
+import ISystemService from "../../Services/Interfaces/ISystemService";
 
 export default class LightsStore {
   @observable
@@ -24,8 +25,22 @@ export default class LightsStore {
 
   private lightsService: ILightsService;
 
-  constructor(lightsService: ILightsService) {
+  constructor(lightsService: ILightsService, systemService: ISystemService) {
     this.lightsService = lightsService;
+    systemService.isOn$.subscribe({
+      next: async value => {
+        if(!value) {
+          if(this.isOn) {
+            await this.togglePower();
+          }
+          if(this.isAuto)
+            await this.toggleAuto();
+        }
+      },
+      error: err => {
+        console.error("could not retrieve next system status");
+      }
+    })
   }
 
   @action

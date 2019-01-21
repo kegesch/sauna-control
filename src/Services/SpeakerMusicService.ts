@@ -2,8 +2,10 @@ import IMusicService from "./Interfaces/IMusicService";
 import Music from "../Model/Music";
 import * as fs from "fs";
 const id3 = require("node-id3");
+// @ts-ignore
 import * as lame from 'lame';
-import Speaker from "speaker";
+// @ts-ignore
+import Speaker from 'speaker';
 
 export default class SpeakerMusicService implements IMusicService {
 
