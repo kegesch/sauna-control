@@ -61,7 +61,7 @@ class App extends React.Component<IAppProps, {}> {
 
   private stores = {
     dateTimeStore: new DateTimeStore(),
-    lightsStore: new LightsStore(this.lightsService),
+    lightsStore: new LightsStore(this.lightsService, this.systemService),
     musicStore: new MusicStore(this.musicService),
     sensorStore: new SensorStore(
       this.temperatureService,
