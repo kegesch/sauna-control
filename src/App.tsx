@@ -26,6 +26,8 @@ import ITemperatureService from "./Services/Interfaces/ITemperatureService";
 import LEDLightsService from "./Services/LEDLightsService";
 import PIDTemperatureService from "./Services/PIDTemperatureService";
 import SystemService from "./Services/SystemService";
+import IMusicService from "./Services/Interfaces/IMusicService";
+import SpeakerMusicService from "./Services/SpeakerMusicService";
 
 interface IAppProps {
   className?: string;
@@ -55,11 +57,12 @@ class App extends React.Component<IAppProps, {}> {
   private lightsService: ILightsService = new LEDLightsService(
     this.sensorService
   );
+  private musicService: IMusicService = new SpeakerMusicService();
 
   private stores = {
     dateTimeStore: new DateTimeStore(),
     lightsStore: new LightsStore(this.lightsService),
-    musicStore: new MusicStore(),
+    musicStore: new MusicStore(this.musicService),
     sensorStore: new SensorStore(
       this.temperatureService,
       this.humidityService,

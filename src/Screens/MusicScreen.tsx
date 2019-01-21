@@ -4,6 +4,7 @@ import { BigInfo, SectionHeader } from "../Components/HelperComponents";
 import { upDown$ } from "../Components/Navigation";
 import MusicStore from "../Components/Stores/MusicStore";
 import Music from "../Model/Music";
+import {Subscription} from "rxjs";
 
 interface IMusicScreenProperties {
   className?: string;
@@ -16,7 +17,7 @@ export default class MusicScreen extends React.Component<
   IMusicScreenProperties,
   {}
 > {
-  private subscription;
+  private subscription: Subscription;
 
   public componentWillMount(): void {
     this.subscription = upDown$.subscribe({
@@ -39,18 +40,11 @@ export default class MusicScreen extends React.Component<
 
   public render() {
     const musicFiles: Music[] = this.props.musicStore.musicFiles || [];
-    const halfIndex = Math.round(musicFiles.length / 2);
-    const music1 = musicFiles.slice(0, halfIndex - 1);
-    const music2 = musicFiles.slice(halfIndex);
-
     const musicRows = [];
 
-    for (let i = 0; i < music1.length; i++) {
+    for (let i = 0; i < musicFiles.length; i++) {
       const row = (
-        <tr>
-          <td className="musicColumnLeft">{music1[i].getName()}</td>
-          <td className="musicColumnRight">{music2[i].getName()}</td>
-        </tr>
+        <div key={i} onClick={() => this.props.musicStore.playMusic(musicFiles[i])}>{musicFiles[i].artist +" - "+musicFiles[i].title}</div>
       );
       musicRows.push(row);
     }
@@ -59,9 +53,7 @@ export default class MusicScreen extends React.Component<
       <div className={this.props.className}>
         <SectionHeader label="Volume" unit="%" />
         <BigInfo>{this.props.musicStore.volume}</BigInfo>
-        <table>
-          <tbody>{musicRows}</tbody>
-        </table>
+        <div style={{display: "flex", flex: "row", margin: "20px 10px", padding: "10px"}}>{musicRows}</div>
       </div>
     );
   }

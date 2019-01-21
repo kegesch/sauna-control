@@ -1,17 +1,24 @@
 export default class Music {
-  private name: string;
-  private filepath: string;
 
-  constructor(name: string, filepath: string) {
-    this.name = name;
-    this.filepath = filepath;
+  private _artist: string;
+  private _title: string;
+  private _filepath: string;
+
+  constructor(artist: string, title: string, filepath: string) {
+    this._title = title;
+    this._artist = artist;
+    this._filepath = filepath;
   }
 
-  public getName(): string {
-    return this.name;
+  get artist(): string {
+    return this._artist;
   }
 
-  public getFilePath(): string {
-    return this.filepath;
+  get title(): string {
+    return this._title;
+  }
+
+  get filePath(): string {
+    return this._filepath;
   }
 }

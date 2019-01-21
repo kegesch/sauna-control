@@ -6,6 +6,9 @@ builds/
 #######
 package-lock.json # yarn is used
 
+# yarn #
+########
+yarn-error.log
 
 # Development folders and files #
 #################################
