@@ -38,7 +38,7 @@ function createWindow() {
     icon: __dirname + "/assets/icons/icon.png",
     webPreferences: {
       webSecurity: false
-    }
+    },
   });
 
   // and load the index.html of the app.
@@ -68,6 +68,8 @@ function createWindow() {
     // Open the DevTools automatically if developing
     if (dev) {
       mainWindow.webContents.openDevTools();
+    } else {
+      mainWindow.setFullScreen(true);
     }
   });
 
