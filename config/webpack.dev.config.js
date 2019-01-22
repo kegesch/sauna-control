@@ -29,7 +29,7 @@ const config = {
       children: false
     },
     before() {
-      spawn("electron", ["."], {
+      spawn("electron", ["--devServer", "."], {
         shell: true,
         env: process.env,
         stdio: "inherit"

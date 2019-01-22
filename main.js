@@ -11,16 +11,6 @@ app.disableHardwareAcceleration();
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-// Keep a reference for dev mode
-let dev = false;
-
-if (
-  process.defaultApp ||
-  /[\\/]electron-prebuilt[\\/]/.test(process.execPath) ||
-  /[\\/]electron[\\/]/.test(process.execPath)
-) {
-  dev = true;
-}
 
 // Temporary fix broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -35,16 +25,19 @@ function createWindow() {
     minWidth: 480,
     minHeight: 800,
     resizable: true,
+    title: "HotWave",
     icon: __dirname + "/assets/icons/icon.png",
     webPreferences: {
       webSecurity: false
     },
+    frame: false,
+    fullscreen: true,
   });
 
   // and load the index.html of the app.
   let indexPath;
-  debugger;
-  if (dev && process.argv.indexOf("--noDevServer") === -1) {
+  if (process.argv.indexOf("--devServer") !== -1) {
+    console.log("serving from localhost");
     indexPath = url.format({
       protocol: "http:",
       host: "localhost:8080",
@@ -52,6 +45,7 @@ function createWindow() {
       slashes: true
     });
   } else {
+    console.log("serving from path");
     indexPath = url.format({
       protocol: "file:",
       pathname: path.join(__dirname, "build", "index.html"),
@@ -63,14 +57,8 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once("ready-to-show", () => {
+    mainWindow.maximize();
     mainWindow.show();
-
-    // Open the DevTools automatically if developing
-    if (dev) {
-      mainWindow.webContents.openDevTools();
-    } else {
-      mainWindow.setFullScreen(true);
-    }
   });
 
   // Emitted when the window is closed.
