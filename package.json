@@ -26,7 +26,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "prod": "webpack --mode production --config=./config/webpack.build.config.js && electron --noDevServer .",
+    "prod": "webpack --mode production --config=./config/webpack.build.config.js && electron .",
     "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./config/webpack.dev.config.js --mode development",
     "build": "webpack --config=./config/webpack.build.config.js --mode production",
     "package": "npm run build",
@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "bindings": "TooTallNate/node-bindings#pull/40/head",
-    "color-convert": "^1.9.3",
     "electron": "^3.0.8",
     "epoll": "^2.0.6",
     "hiredis": "^0.5.0",
