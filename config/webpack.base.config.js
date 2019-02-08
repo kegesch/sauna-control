@@ -64,7 +64,7 @@ module.exports = {
       optionalDependencies: true
     }),
     new CopyWebpackPlugin([
-      { from: 'assets/music' }
+      { from: 'assets/music', to:  'assets/music'}
     ])
   ],
   stats: {
