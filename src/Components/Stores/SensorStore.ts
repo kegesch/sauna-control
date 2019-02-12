@@ -27,6 +27,12 @@ export default class SensorStore {
   @observable
   public isEvaporating: boolean;
 
+  @observable
+  public isTempOn: boolean;
+
+  @observable
+  public isEvapOn: boolean;
+
   private temperatureService: ITemperatureService;
   private humidityService: IHumidityService;
 

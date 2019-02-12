@@ -4,6 +4,7 @@ import styled from "styled-components";
 interface IColorPalette {
   black: string;
   white: string;
+  warmwhite: string;
   green: string;
   red: string;
   blue: string;
@@ -23,6 +24,7 @@ export const MaterialColors: IColorPalette = {
   purple: "#D900FF",
   ledBlue: "#005AE0",
   ledRed: "#FF0000",
+  warmwhite: "#FFBF0B",
 };
 
 export const Separator = styled.div`
