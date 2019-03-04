@@ -55,7 +55,6 @@ export const BigInfo = styled(BigInfoUnstyled)`
   text-align: center;
   margin: 0px 0px 20px 0px;
   line-height: 90%;
-
   transition: font-size 0.5s;
 `;
 
@@ -124,6 +123,7 @@ export const DivButton = (props: IDivButtonProperties) => {
 export const Button = styled(DivButton)`
   display: inline;
   cursor: pointer;
+  margin: auto 0px;
 `;
 
 export interface IHoldButtonProperties {
@@ -166,8 +166,41 @@ const UnstyledColorBox = (props: IColorBoxProperties) => {
 };
 export const ColorBox = styled(UnstyledColorBox)`
   background-color: ${props => props.icolor};
-  border-radius: 8px;
+  border-radius: ${props => props.size/2}px;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
-  ${props => props.selected ? "border: 2px solid " + MaterialColors.green + "; margin: 8px;" : "margin: 10px;"}
+  margin: 8px;
+  border: 2px solid;
+  border-color: ${props => props.selected ? MaterialColors.green : MaterialColors.white};
+`;
+
+interface IRoundButton extends IDivButtonProperties {
+  text: string;
+  height: number;
+  selected?: boolean;
+}
+
+const UnstyledRoundButton = (props: IRoundButton) => {
+  return (
+    <div {...props}>
+      {props.text}
+    </div>
+  );
+};
+
+export const RoundButton = styled(UnstyledRoundButton)`
+  color: ${MaterialColors.white};
+  text-transform: uppercase;
+  text-align: center;
+  min-width: 90px;
+  border-radius: ${props => props.height}px;
+  height: ${props => props.height}px;
+  padding: 10px;
+  font-size: 200%
+  border: 2px solid ${MaterialColors.white};
+  ${props => props.selected ? "border-color: " + MaterialColors.green + ";" : ""}
+  transition: background-color 0.5s ease;
+  ${props => props.selected ? "background-color: " + MaterialColors.green + ";" : ""};
+  margin: 10px;
+  line-height: ${props => props.height}px; 
 `;

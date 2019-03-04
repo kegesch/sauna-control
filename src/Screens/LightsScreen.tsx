@@ -2,12 +2,11 @@ import { inject, observer } from "mobx-react";
 import * as React from "react";
 import styled from "styled-components";
 import {
-  BigInfo, ColorBox,
-  MaterialColors,
+  BigInfo, Button, ColorBox, DivButton,
+  MaterialColors, RoundButton,
   SectionHeader
 } from "../Components/HelperComponents";
-import { BoxedIcon } from "../Components/Icon";
-import { upDown$ } from "../Components/Navigation";
+import {BoxedIcon, default as Icon} from "../Components/Icon";
 import LightsStore from "../Components/Stores/LightsStore";
 
 interface ILightsScreenProperties {
@@ -23,42 +22,47 @@ const IconLink = styled(BoxedIcon)`
     props.isEnabled ? MaterialColors.green : MaterialColors.white};
 `;
 
+const StyledIcon = styled(Icon)`
+  margin: 5px auto;
+`;
+
 @inject("lightsStore")
 @observer
 export default class LightsScreen extends React.Component<
   ILightsScreenProperties,
   {}
 > {
-  private subscription: any;
-
-  public componentWillMount(): void {
-    this.subscription = upDown$.subscribe({
-      error: err => {
-        console.log("Error on retrieving next: " + err);
-      },
-      next: value => {
-        if (value === "up") {
-          this.props.lightsStore.setBrightness(
-            this.props.lightsStore.brightness + 1
-          );
-        } else if (value === "down") {
-          this.props.lightsStore.setBrightness(
-            this.props.lightsStore.brightness - 1
-          );
-        }
-      }
-    });
-  }
-
-  public componentWillUnmount(): void {
-    this.subscription.unsubscribe();
-  }
 
   public render() {
     return (
       <div className={this.props.className}>
         <SectionHeader label="HELLIGKEIT" unit="%" />
+        <div style={{display: 'flex', flex: 'row', justifyContent: 'center'}}>
+          <Button onClick={() => this.props.lightsStore.setBrightness(this.props.lightsStore.brightness-10)}>
+            <StyledIcon
+              size={90}
+              name="down"
+              color={MaterialColors.white}
+            />
+          </Button>
         <BigInfo>{this.props.lightsStore.brightness}</BigInfo>
+          <Button style={{marginLeft: 20,}}  onClick={() => this.props.lightsStore.setBrightness(this.props.lightsStore.brightness+10)}>
+            <StyledIcon
+              size={90}
+              name="up"
+              color={MaterialColors.white}
+            />
+          </Button>
+        </div>
+        <div style={{display: 'flex', flex: 'row', justifyContent: 'center', marginTop: 20}}>
+          <RoundButton text={"Auto"} height={50} onClick={() => {
+            this.props.lightsStore.enableAuto();
+          }} selected={this.props.lightsStore.isAuto}/>
+          <RoundButton text={"Off"} height={50} onClick={() => {
+            this.props.lightsStore.off();
+              }} selected={!this.props.lightsStore.isOn}/>
+
+        </div>
         <div style={{display: 'flex', flex: 'row', justifyContent: 'center'}}>
           {
             this.props.lightsStore.colors.map((color, index) =>
@@ -70,26 +74,7 @@ export default class LightsScreen extends React.Component<
                 onClick={() => {this.props.lightsStore.selectColor(index)}} />)
           }
         </div>
-        <div style={{display: 'flex', flex: 'row', justifyContent: 'center', marginTop: 20}}>
-          <IconLink
-            name="power"
-            size={130}
-            color={MaterialColors.white}
-            onClick={() => {
-              this.props.lightsStore.togglePower();
-            }}
-            isEnabled={this.props.lightsStore.isOn}
-          />
-          <IconLink
-            name="auto"
-            size={130}
-            color={MaterialColors.white}
-            onClick={() => {
-              this.props.lightsStore.toggleAuto();
-            }}
-            isEnabled={this.props.lightsStore.isAuto}
-          />
-        </div>
+
       </div>
     );
   }

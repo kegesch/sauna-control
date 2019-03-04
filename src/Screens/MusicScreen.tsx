@@ -1,10 +1,8 @@
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import { BigInfo, SectionHeader } from "../Components/HelperComponents";
-import { upDown$ } from "../Components/Navigation";
 import MusicStore from "../Components/Stores/MusicStore";
 import Music from "../Model/Music";
-import {Subscription} from "rxjs";
 
 interface IMusicScreenProperties {
   className?: string;
@@ -17,26 +15,6 @@ export default class MusicScreen extends React.Component<
   IMusicScreenProperties,
   {}
 > {
-  private subscription: Subscription;
-
-  public componentWillMount(): void {
-    this.subscription = upDown$.subscribe({
-      error: err => {
-        console.log("Error on retrieving next: " + err);
-      },
-      next: value => {
-        if (value === "up") {
-          this.props.musicStore.setVolume(this.props.musicStore.volume + 1);
-        } else if (value === "down") {
-          this.props.musicStore.setVolume(this.props.musicStore.volume - 1);
-        }
-      }
-    });
-  }
-
-  public componentWillUnmount(): void {
-    this.subscription.unsubscribe();
-  }
 
   public render() {
     const musicFiles: Music[] = this.props.musicStore.musicFiles || [];

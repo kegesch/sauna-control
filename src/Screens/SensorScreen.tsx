@@ -1,9 +1,7 @@
 import { inject, observer } from "mobx-react";
 import * as React from "react";
 import { BigInfo, SectionHeader } from "../Components/HelperComponents";
-import { upDown$ } from "../Components/Navigation";
 import SensorStore from "../Components/Stores/SensorStore";
-import { Subscription } from "rxjs";
 
 interface ISensorScreenProperties {
   className?: string;
@@ -16,30 +14,6 @@ export default class SensorScreen extends React.Component<
   ISensorScreenProperties,
   {}
 > {
-  private subscription: Subscription;
-
-  public componentWillMount(): void {
-    this.subscription = upDown$.subscribe({
-      error: err => {
-        console.error("Error on retrieving next: " + err);
-      },
-      next: value => {
-        if (value === "up") {
-          this.props.sensorStore.setSetPoint(
-            this.props.sensorStore.setPoint + 1
-          );
-        } else if (value === "down") {
-          this.props.sensorStore.setSetPoint(
-            this.props.sensorStore.setPoint - 1
-          );
-        }
-      }
-    });
-  }
-
-  public componentWillUnmount(): void {
-    this.subscription.unsubscribe();
-  }
 
   public render() {
     return (

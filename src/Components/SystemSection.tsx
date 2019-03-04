@@ -34,7 +34,7 @@ class SystemSection extends React.Component<ISystemSectionProps, {}> {
           size={20}
           name="lightbulb"
           color={MaterialColors.white}
-          isEnabled={this.props.lightsStore.isOn}
+          isEnabled={this.props.lightsStore.isOn && !this.props.lightsStore.isAuto}
           isWarning={this.props.lightsStore.isAuto}
         />
         <StyledIcon
