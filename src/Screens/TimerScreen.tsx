@@ -28,7 +28,7 @@ export default class TimerScreen extends React.Component<
     const green = this.colorToHexArray(MaterialColors.green);
     const blue = this.colorToHexArray(MaterialColors.blue);
     return (
-      <div className={this.props.className}>
+      <div style={{margin: "0 auto"}} className={this.props.className}>
         <SectionHeader label="Timer" unit="min" />
         <div style={{ width: "90%", margin: "0 auto" }}>
           <StyledTimerSelection

@@ -1,12 +1,24 @@
 import { inject, observer } from "mobx-react";
 import * as React from "react";
-import { BigInfo, SectionHeader } from "../Components/HelperComponents";
 import SensorStore from "../Components/Stores/SensorStore";
+import SaunaMode from "../Components/SaunaMode";
+import finlandImage from "../../assets/icons/images/finland.png";
+import aromaImage from "../../assets/icons/images/aroma.png";
+import softImage from "../../assets/icons/images/soft.png";
+import tropicalImage from "../../assets/icons/images/tropical.png";
+import styled from "styled-components";
 
 interface ISensorScreenProperties {
   className?: string;
   sensorStore: SensorStore;
 }
+
+const ScreenDiv = styled.div`
+  flex: 1; 
+  flex-direction: row;
+  width: 470px;
+  margin: 0 auto;
+`;
 
 @inject("sensorStore")
 @observer
@@ -16,52 +28,14 @@ export default class SensorScreen extends React.Component<
 > {
 
   public render() {
+        
     return (
-      <div className={this.props.className}>
-        <div
-          onClick={() => {
-            this._selectSetPoint("temp");
-          }}
-        >
-          <SectionHeader
-            label="Temperatur"
-            value={this.props.sensorStore.currentTemp + ""}
-            unit="°C"
-          />
-          <BigInfo
-            selected={this.props.sensorStore.selectedSetPoint === "temp"}
-          >
-            {this.props.sensorStore.setPointTemp}
-          </BigInfo>
-        </div>
-        <div
-          onClick={() => {
-            this._selectSetPoint("humid");
-          }}
-        >
-          <SectionHeader
-            label="Feuchtigkeit"
-            value={this.props.sensorStore.currentHumid + ""}
-            unit="%"
-          />
-          <BigInfo
-            selected={this.props.sensorStore.selectedSetPoint === "humid"}
-          >
-            {this.props.sensorStore.setPointHumid}
-          </BigInfo>
-        </div>
-      </div>
+      <ScreenDiv className={this.props.className}>
+        <SaunaMode name={"finland sauna"} minDegree={70} maxDegree={100} minHumidity={3} maxHumidity={3} imageIconSrc={finlandImage}/>
+        <SaunaMode name={"tropical bath"} minDegree={45} maxDegree={60} minHumidity={10} maxHumidity={20} imageIconSrc={tropicalImage}/>
+        <SaunaMode name={"soft dampf"} minDegree={45} maxDegree={60} minHumidity={40} maxHumidity={55} imageIconSrc={softImage}/>
+        <SaunaMode name={"aroma bath"} minDegree={40} maxDegree={45} minHumidity={40} maxHumidity={55} imageIconSrc={aromaImage}/>
+      </ScreenDiv>
     );
-  }
-
-  private _selectSetPoint(setPoint: "temp" | "humid") {
-    const selected = this.props.sensorStore.selectedSetPoint;
-
-    let select: "temp" | "humid" | null = null;
-    if (selected !== setPoint) {
-      select = setPoint;
-    }
-
-    this.props.sensorStore.selectSetPoint(select);
   }
 }

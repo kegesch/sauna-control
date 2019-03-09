@@ -42,6 +42,15 @@ module.exports = {
         resolve: {
           aliasFields: ['main']
         }
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {},
+          },
+        ],
       }
     ]
   },
