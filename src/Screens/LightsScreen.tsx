@@ -45,7 +45,7 @@ export default class LightsScreen extends React.Component<
               color={MaterialColors.white}
             />
           </Button>
-        <BigInfo>{this.props.lightsStore.brightness}</BigInfo>
+          <BigInfo>{this.props.lightsStore.brightness}</BigInfo>
           <Button style={{marginLeft: 20,}}  onClick={() => this.props.lightsStore.setBrightness(this.props.lightsStore.brightness+10)}>
             <StyledIcon
               size={90}

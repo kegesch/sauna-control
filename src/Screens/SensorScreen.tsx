@@ -2,11 +2,9 @@ import { inject, observer } from "mobx-react";
 import * as React from "react";
 import SensorStore from "../Components/Stores/SensorStore";
 import SaunaMode from "../Components/SaunaMode";
-import finlandImage from "../../assets/icons/images/finland.png";
-import aromaImage from "../../assets/icons/images/aroma.png";
-import softImage from "../../assets/icons/images/soft.png";
-import tropicalImage from "../../assets/icons/images/tropical.png";
 import styled from "styled-components";
+import Mode from "../Model/SaunaMode";
+import SaunaModeScreen from "./SaunaModeScreen";
 
 interface ISensorScreenProperties {
   className?: string;
@@ -28,14 +26,29 @@ export default class SensorScreen extends React.Component<
 > {
 
   public render() {
-        
-    return (
-      <ScreenDiv className={this.props.className}>
-        <SaunaMode name={"finland sauna"} minDegree={70} maxDegree={100} minHumidity={3} maxHumidity={3} imageIconSrc={finlandImage}/>
-        <SaunaMode name={"tropical bath"} minDegree={45} maxDegree={60} minHumidity={10} maxHumidity={20} imageIconSrc={tropicalImage}/>
-        <SaunaMode name={"soft dampf"} minDegree={45} maxDegree={60} minHumidity={40} maxHumidity={55} imageIconSrc={softImage}/>
-        <SaunaMode name={"aroma bath"} minDegree={40} maxDegree={45} minHumidity={40} maxHumidity={55} imageIconSrc={aromaImage}/>
-      </ScreenDiv>
-    );
+
+    let screen =  null;
+
+    if(this.props.sensorStore.selectedSaunaMode) {
+      screen = <SaunaModeScreen sensorStore={this.props.sensorStore} saunaMode={this.props.sensorStore.selectedSaunaMode}/>
+
+    } else {
+      screen = <ScreenDiv className={this.props.className}>
+        {
+          this.props.sensorStore.saunaModes.map((mode: Mode) => <SaunaMode
+            onClick={() => this.props.sensorStore.selectSaunaMode(mode)}
+            key={mode.name}
+            name={mode.name}
+            minDegree={mode.minTemperature}
+            maxDegree={mode.maxTemperature}
+            minHumidity={mode.minHumidity}
+            maxHumidity={mode.maxHumidity}
+            imageIconSrc={mode.iconImage}
+          />)
+        }
+      </ScreenDiv>;
+    }
+
+    return screen;
   }
 }

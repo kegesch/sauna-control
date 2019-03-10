@@ -10,6 +10,7 @@ interface ISaunaModeProps {
   minHumidity: number;
   maxHumidity: number
   imageIconSrc: any;
+  onClick?: () => void;
 }
 
 const Container = styled.div`
@@ -20,8 +21,6 @@ const Container = styled.div`
   text-transform: uppercase;
   margin-bottom: 10px;
   padding: 10px;
-  border: 2px solid ${MaterialColors.white};
-  border-radius: 8px;
 `;
 
 const InfoContainer = styled.div`
@@ -53,7 +52,9 @@ export default class SaunaMode extends React.Component<ISaunaModeProps, {}> {
   public render() {
     return (
       <Container>
-        <RoundedImg height={80} src={this.props.imageIconSrc} />
+        <RoundedImg height={80} src={this.props.imageIconSrc} onClick={() => {
+          this.props.onClick()
+        }}/>
         <InfoContainer>
           <InfoParagraph>{this.props.name}</InfoParagraph>
           <SettingsBox>
