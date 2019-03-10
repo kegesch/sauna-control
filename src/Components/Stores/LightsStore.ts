@@ -14,7 +14,7 @@ export default class LightsStore {
   public brightness: number = 100;
 
   @observable
-  public selectedColorIndex: number = 0;
+  public selectedColorIndex: number = -1;
 
   @computed
   public get selectedColor() {
@@ -30,11 +30,7 @@ export default class LightsStore {
     systemService.isOn$.subscribe({
       next: async value => {
         if(!value) {
-          if(this.isOn) {
-            await this.togglePower();
-          }
-          if(this.isAuto)
-            await this.toggleAuto();
+          this.off();
         }
       },
       error: err => {
@@ -46,8 +42,11 @@ export default class LightsStore {
   @action
   public selectColor(index: number) {
     this.selectedColorIndex = index;
+    this.brightness = 100;
     let colorArray = this.colorToHexArray(this.colors[index]);
     this.lightsService.setColor(colorArray[0], colorArray[1], colorArray[2]);
+    this.isAuto = false;
+    this.isOn = true;
   }
 
   private colorToHexArray(color: string): [number, number, number] {
@@ -55,29 +54,21 @@ export default class LightsStore {
     return [(number >> 16) & 0xff, (number >> 8) & 0xff, number & 0xff];
   }
 
-  toggleAuto = flow(this.toggleAutoAsync);
-  private *toggleAutoAsync(): any {
-    if (!this.isAuto) {
-      const actualBright = yield this.lightsService.autoOn();
-      this.brightness = actualBright * 100;
-    } else {
-      yield this.lightsService.autoOff();
-    }
-
-    this.isAuto = !this.isAuto;
-    if (this.isAuto && this.isAuto === this.isOn) this.isOn = !this.isAuto;
+  enableAuto = flow(this.enableAutoAsync);
+  private *enableAutoAsync(): any {
+    this.isAuto = true;
+    this.isOn = true;
+    this.selectedColorIndex = -1;
+    const actualBright = yield this.lightsService.autoOn();
+    this.brightness = actualBright * 100;
   }
 
-  togglePower = flow(this.togglePowerAsync);
-  private *togglePowerAsync(): any {
-    if (!this.isOn) {
-      const actualBright = yield this.lightsService.on();
-      this.brightness = actualBright * 100;
-    } else {
-      yield this.lightsService.off();
-    }
-    this.isOn = !this.isOn;
-    if (this.isOn && this.isAuto === this.isOn) this.isAuto = !this.isOn;
+  off = flow(this.offAsync);
+  private *offAsync(): any {
+    this.isAuto = false;
+    this.isOn = false;
+    this.selectedColorIndex = -1;
+    yield this.lightsService.off();
   }
 
   setBrightness = flow(this.setBrightnessAsync);

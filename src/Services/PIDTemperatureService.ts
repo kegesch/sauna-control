@@ -20,8 +20,8 @@ export default class PIDTemperatureService implements ITemperatureService {
     this.pid = new Controller({
       dt: 1,
       k_d: 0.01,
-      k_i: 0.0,
-      k_p: 0.25
+      k_i: 0.1,
+      k_p: 0.15
     });
 
     this.sensorService.temperature$.subscribe({

@@ -49,7 +49,7 @@ export default class LEDLightsService implements ILightsService {
 
   public async autoOff(): Promise<void> {
     this.statusAuto = "off";
-    await this.ledService.fill(0x00, 0x00, 0x00);
+    await this.setColor(0x00, 0x00, 0x00);
   }
 
   public async autoOn(): Promise<number> {
@@ -72,7 +72,7 @@ export default class LEDLightsService implements ILightsService {
 
   public async off(): Promise<void> {
     this.status = "off";
-    await this.ledService.fill(0x00, 0x00, 0x00);
+    await this.setColor(0x00, 0x00, 0x00);
   }
 
   async setColor(red: number, green: number, blue: number) {

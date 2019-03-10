@@ -18,8 +18,6 @@ const StyledIcon = styled(Icon)`
   margin: 5px auto;
 `;
 
-export const upDown$: Rx.Subject<string> = new Rx.Subject<string>();
-
 @inject("systemStore")
 @observer
 export default class Navigation extends React.Component<INavigationProps, {}> {
@@ -34,20 +32,7 @@ export default class Navigation extends React.Component<INavigationProps, {}> {
                 {this.props.systemStore.errorMessage}
               </span>
             </td>
-            <td>
-              <HoldButton
-                action={() => {
-                  upDown$.next("up");
-                }}
-              >
-                <BoxedIcon
-                  isEnabled
-                  size={this.props.iconSize}
-                  name={"up"}
-                  color={MaterialColors.white}
-                />
-              </HoldButton>
-            </td>
+            <td/>
           </tr>
           <tr>
             <td>
@@ -109,20 +94,7 @@ export default class Navigation extends React.Component<INavigationProps, {}> {
                 Hotwãve
               </span>
             </td>
-            <td>
-              <HoldButton
-                action={() => {
-                  upDown$.next("down");
-                }}
-              >
-                <BoxedIcon
-                  isEnabled
-                  size={this.props.iconSize}
-                  name={"down"}
-                  color={MaterialColors.white}
-                />
-              </HoldButton>
-            </td>
+            <td/>
           </tr>
         </tbody>
       </table>

@@ -2,8 +2,13 @@ import { action, computed, observable } from "mobx";
 import IHumidityService from "../../Services/Interfaces/IHumidityService";
 import { ISensorService } from "../../Services/Interfaces/ISensorService";
 import ITemperatureService from "../../Services/Interfaces/ITemperatureService";
-import { observer } from "mobx-react";
 import ISystemService from "../../Services/Interfaces/ISystemService";
+import SaunaMode from "../../Model/SaunaMode";
+
+import finlandImage from "../../../assets/icons/images/finland.png";
+import aromaImage from "../../../assets/icons/images/aroma.png";
+import softImage from "../../../assets/icons/images/soft.png";
+import tropicalImage from "../../../assets/icons/images/tropical.png";
 
 export default class SensorStore {
   @observable
@@ -13,7 +18,9 @@ export default class SensorStore {
   public setPointHumid: number = 50;
 
   @observable
-  public selectedSetPoint: "temp" | "humid" | null = null;
+  public selectedSaunaMode: SaunaMode = null;
+
+  public saunaModes: SaunaMode[];
 
   @observable
   public currentTemp: number = 0;
@@ -27,8 +34,19 @@ export default class SensorStore {
   @observable
   public isEvaporating: boolean;
 
+  @observable
+  public isTempOn: boolean;
+
+  @observable
+  public isEvapOn: boolean;
+
   private temperatureService: ITemperatureService;
   private humidityService: IHumidityService;
+
+  private finlandMode: SaunaMode = new SaunaMode("finland sauna", 70, 100, 90, 3, 3, 3, finlandImage);
+  private tropicalMode: SaunaMode = new SaunaMode("tropical bath", 45, 60, 55, 10, 20, 15, tropicalImage);
+  private softDampfMode: SaunaMode = new SaunaMode("soft dampf", 45, 60, 55, 40, 55, 45, softImage);
+  private aromaBathMode: SaunaMode = new SaunaMode("aroma bath", 40, 45, 40, 40, 55, 50, aromaImage);
 
   constructor(
     temperatureService: ITemperatureService,
@@ -38,6 +56,8 @@ export default class SensorStore {
   ) {
     this.temperatureService = temperatureService;
     this.humidityService = humidityService;
+
+    this.saunaModes = [this.finlandMode, this.tropicalMode, this.softDampfMode, this.aromaBathMode];
 
     this.temperatureService.temperature$.subscribe({
       error: () =>
@@ -69,7 +89,7 @@ export default class SensorStore {
       error: () =>
         console.error("Could not retrieve system status from SystemService."),
       next: (value: boolean) => {
-        if (value) {
+        if (value && this.selectedSaunaMode) {
           this.humidityService.setTargetHumidity(this.setPointHumid);
           this.temperatureService.setTargetTemperature(this.setPointTemp);
         } else {
@@ -81,32 +101,20 @@ export default class SensorStore {
   }
 
   @action
-  public setSetPoint(num: number) {
-    if (this.selectedSetPoint === "temp") {
-      this.setTemp(num);
-    } else if (this.selectedSetPoint === "humid") {
-      this.setHumid(num);
+  public selectSaunaMode(mode: SaunaMode) {
+    this.selectedSaunaMode = mode;
+    if(!mode) {
+      this.humidityService.stop();
+      this.temperatureService.stop();
+    } else {
+      this.setTemp(mode.defaultTemperature);
+      this.setHumid(mode.defaultHumidity);
     }
   }
 
-  @computed
-  public get setPoint() {
-    if (this.selectedSetPoint === "temp") {
-      return this.setPointTemp;
-    } else if (this.selectedSetPoint === "humid") {
-      return this.setPointHumid;
-    }
-    // throw new Error("No SetPoint selected. There must be a selected SetPoint to fetch its current value.");
-  }
-
   @action
-  public selectSetPoint(setPoint: "temp" | "humid" | null) {
-    this.selectedSetPoint = setPoint;
-  }
-
-  @action
-  private setHumid(humid: number) {
-    if (humid > 100 || humid < 0) {
+  public setHumid(humid: number) {
+    if (this.selectedSaunaMode && (humid > this.selectedSaunaMode.maxHumidity || humid < this.selectedSaunaMode.minHumidity)) {
       return;
     }
 
@@ -115,8 +123,8 @@ export default class SensorStore {
   }
 
   @action
-  private setTemp(temp: number) {
-    if (temp > 105 || temp < 0) {
+  public setTemp(temp: number) {
+    if (this.selectedSaunaMode  && (temp > this.selectedSaunaMode.maxTemperature || temp < this.selectedSaunaMode.minTemperature)) {
       return;
     }
 

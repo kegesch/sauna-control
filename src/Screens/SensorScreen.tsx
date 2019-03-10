@@ -1,14 +1,22 @@
 import { inject, observer } from "mobx-react";
 import * as React from "react";
-import { BigInfo, SectionHeader } from "../Components/HelperComponents";
-import { upDown$ } from "../Components/Navigation";
 import SensorStore from "../Components/Stores/SensorStore";
-import { Subscription } from "rxjs";
+import SaunaMode from "../Components/SaunaMode";
+import styled from "styled-components";
+import Mode from "../Model/SaunaMode";
+import SaunaModeScreen from "./SaunaModeScreen";
 
 interface ISensorScreenProperties {
   className?: string;
   sensorStore: SensorStore;
 }
+
+const ScreenDiv = styled.div`
+  flex: 1; 
+  flex-direction: row;
+  width: 470px;
+  margin: 0 auto;
+`;
 
 @inject("sensorStore")
 @observer
@@ -16,78 +24,31 @@ export default class SensorScreen extends React.Component<
   ISensorScreenProperties,
   {}
 > {
-  private subscription: Subscription;
-
-  public componentWillMount(): void {
-    this.subscription = upDown$.subscribe({
-      error: err => {
-        console.error("Error on retrieving next: " + err);
-      },
-      next: value => {
-        if (value === "up") {
-          this.props.sensorStore.setSetPoint(
-            this.props.sensorStore.setPoint + 1
-          );
-        } else if (value === "down") {
-          this.props.sensorStore.setSetPoint(
-            this.props.sensorStore.setPoint - 1
-          );
-        }
-      }
-    });
-  }
-
-  public componentWillUnmount(): void {
-    this.subscription.unsubscribe();
-  }
 
   public render() {
-    return (
-      <div className={this.props.className}>
-        <div
-          onClick={() => {
-            this._selectSetPoint("temp");
-          }}
-        >
-          <SectionHeader
-            label="Temperatur"
-            value={this.props.sensorStore.currentTemp + ""}
-            unit="°C"
-          />
-          <BigInfo
-            selected={this.props.sensorStore.selectedSetPoint === "temp"}
-          >
-            {this.props.sensorStore.setPointTemp}
-          </BigInfo>
-        </div>
-        <div
-          onClick={() => {
-            this._selectSetPoint("humid");
-          }}
-        >
-          <SectionHeader
-            label="Feuchtigkeit"
-            value={this.props.sensorStore.currentHumid + ""}
-            unit="%"
-          />
-          <BigInfo
-            selected={this.props.sensorStore.selectedSetPoint === "humid"}
-          >
-            {this.props.sensorStore.setPointHumid}
-          </BigInfo>
-        </div>
-      </div>
-    );
-  }
 
-  private _selectSetPoint(setPoint: "temp" | "humid") {
-    const selected = this.props.sensorStore.selectedSetPoint;
+    let screen =  null;
 
-    let select: "temp" | "humid" | null = null;
-    if (selected !== setPoint) {
-      select = setPoint;
+    if(this.props.sensorStore.selectedSaunaMode) {
+      screen = <SaunaModeScreen sensorStore={this.props.sensorStore} saunaMode={this.props.sensorStore.selectedSaunaMode}/>
+
+    } else {
+      screen = <ScreenDiv className={this.props.className}>
+        {
+          this.props.sensorStore.saunaModes.map((mode: Mode) => <SaunaMode
+            onClick={() => this.props.sensorStore.selectSaunaMode(mode)}
+            key={mode.name}
+            name={mode.name}
+            minDegree={mode.minTemperature}
+            maxDegree={mode.maxTemperature}
+            minHumidity={mode.minHumidity}
+            maxHumidity={mode.maxHumidity}
+            imageIconSrc={mode.iconImage}
+          />)
+        }
+      </ScreenDiv>;
     }
 
-    this.props.sensorStore.selectSetPoint(select);
+    return screen;
   }
 }
