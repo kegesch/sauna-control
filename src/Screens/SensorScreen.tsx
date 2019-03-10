@@ -14,8 +14,8 @@ interface ISensorScreenProperties {
 const ScreenDiv = styled.div`
   flex: 1; 
   flex-direction: row;
-  width: 470px;
   margin: 0 auto;
+  padding: 0px 40px;
 `;
 
 @inject("sensorStore")

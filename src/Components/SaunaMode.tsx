@@ -17,7 +17,7 @@ const Container = styled.div`
   display: flex;
   flex: 1; 
   flex-direction: row;
-  font-size: 150%;
+  font-size: 190%;
   text-transform: uppercase;
   margin-bottom: 10px;
   padding: 10px;
@@ -52,7 +52,7 @@ export default class SaunaMode extends React.Component<ISaunaModeProps, {}> {
   public render() {
     return (
       <Container>
-        <RoundedImg height={80} src={this.props.imageIconSrc} onClick={() => {
+        <RoundedImg height={115} src={this.props.imageIconSrc} onClick={() => {
           this.props.onClick()
         }}/>
         <InfoContainer>

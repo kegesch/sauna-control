@@ -12,7 +12,6 @@ interface ISaunaModeScreenProps {
 }
 
 const Container = styled.div`
-  width: 470px;
   margin: 0 auto;
   display: flex;
   flex: 1;
@@ -29,7 +28,7 @@ const StyledImage = styled.img`
 const Title = styled.p`
   padding: 0px;
   margin: 0px 10px;
-  font-size: 150%;
+  font-size: 190%;
   text-transform: uppercase;
   text-align: center;
 `;
@@ -95,9 +94,9 @@ const StyledIcon = styled(Icon)`
 
 const Value = styled.p`
   display: block;
-  font-size: 200%;
+  font-size: 600%;
   text-align: center;
-  margin: 10px 0px 0px 10px;
+  margin: 0px 0px 0px 10px;
   line-height: 90%;
   `;
 
@@ -113,7 +112,7 @@ const SensorSettingEditor = (props: ISensorSettingEditorProps) => {
 
   const downButton = <Button onClick={() => props.setValue(props.targetValue - props.stepSize)}>
       <StyledIcon
-      size={50}
+      size={70}
       name="down"
       color={MaterialColors.white}
       />
@@ -121,7 +120,7 @@ const SensorSettingEditor = (props: ISensorSettingEditorProps) => {
 
   const upButton = <Button style={{marginLeft: 20,}}  onClick={() => props.setValue(props.targetValue + props.stepSize)}>
       <StyledIcon
-        size={50}
+        size={70}
         name="up"
         color={MaterialColors.white}
       />
