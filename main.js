@@ -19,10 +19,15 @@ if (process.platform === "win32") {
   app.commandLine.appendSwitch("force-device-scale-factor", "1");
 }
 
+
+let dev = process.argv.indexOf("--devServer") !== -1;
+
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     minWidth: 480,
+    width: 480,
+    height: 800,
     minHeight: 800,
     resizable: true,
     title: "HotWave",
@@ -31,14 +36,14 @@ function createWindow() {
       webSecurity: false
     },
     frame: false,
-    fullscreen: true,
     backgroundColor: '#1D1D1D',
     show: false
   });
 
   // and load the index.html of the app.
   let indexPath;
-  if (process.argv.indexOf("--devServer") !== -1) {
+
+  if (dev) {
     console.log("serving from localhost");
     indexPath = url.format({
       protocol: "http:",
@@ -59,7 +64,7 @@ function createWindow() {
 
   // Don't show until we are ready and loaded
   mainWindow.once("ready-to-show", () => {
-    mainWindow.maximize();
+    if(!dev) mainWindow.maximize();
     mainWindow.show();
   });
 
