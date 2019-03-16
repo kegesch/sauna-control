@@ -58,6 +58,7 @@ function createWindow() {
       pathname: path.join(__dirname, "build", "index.html"),
       slashes: true
     });
+    mainWindow.setFullScreen(true);
   }
 
   mainWindow.loadURL(indexPath);
