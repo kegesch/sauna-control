@@ -18,7 +18,7 @@ export default class PIDHumidityService implements IHumidityService {
     this.pid = new Controller({
       dt: 1,
       k_d: 0.01,
-      k_i: 0.1,
+      k_i: 0,
       k_p: 0.15
     });
 
