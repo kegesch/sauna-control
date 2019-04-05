@@ -11,7 +11,7 @@ interface IMusicScreenProperties {
 }
 
 const MusicItem = styled.div`
-  font-size: 140%;
+  font-size: 210%;
   color: ${props => props.active ? MaterialColors.green : MaterialColors.white}
   padding: 10px 0px;
 `;
@@ -36,9 +36,8 @@ export default class MusicScreen extends React.Component<
 
     return (
       <div className={this.props.className}>
-        <SectionHeader label="Volume" unit="%" />
-        <BigInfo>{this.props.musicStore.volume}</BigInfo>
-        <div style={{display: "flex", flexDirection: "column", flexWrap: "wrap",  margin: "20px 10px", padding: "20px", height: "200px"}}>{musicRows}</div>
+        <SectionHeader label="Musik" unit={""+musicRows.length} />
+        <div style={{display: "flex", flexWrap: "wrap", flexDirection: "column", margin: "20px 10px", padding: "20px", height: "400px"}}>{musicRows}</div>
       </div>
     );
   }

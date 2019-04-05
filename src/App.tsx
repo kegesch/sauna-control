@@ -55,7 +55,8 @@ class App extends React.Component<IAppProps, {}> {
     this.sensorService
   );
   private lightsService: ILightsService = new LEDLightsService(
-    this.sensorService
+    this.sensorService,
+    this.systemService
   );
   private musicService: IMusicService = new SpeakerMusicService();
 

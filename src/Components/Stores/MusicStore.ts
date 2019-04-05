@@ -3,7 +3,6 @@ import Music from "../../Model/Music";
 import IMusicService from "../../Services/Interfaces/IMusicService";
 
 export default class MusicStore {
-  @observable public volume: number = 100;
   @observable public musicFiles: Music[];
   @observable public currentMusic: Music = undefined;
 
@@ -20,19 +19,9 @@ export default class MusicStore {
     return this.currentMusic !== undefined;
   }
 
-  @action
-  public setVolume(volume: number) {
-    if (volume < 0 || volume > 100) {
-      return;
-    }
-
-    this.volume = volume;
-  }
-
   refreshFiles = flow(this.refreshFilesAsync);
   private * refreshFilesAsync() {
     this.musicFiles = yield this.musicService.getMusicFiles();
-    console.log(this.musicFiles);
   }
 
   @action

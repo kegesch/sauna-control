@@ -1,6 +1,7 @@
 import ILightsService from "./Interfaces/ILightsService";
 import SPILed from "../lib/spi-led";
 import { ISensorService } from "./Interfaces/ISensorService";
+import ISystemService from "./Interfaces/ISystemService";
 
 export default class LEDLightsService implements ILightsService {
   private ledService: SPILed;
@@ -14,7 +15,7 @@ export default class LEDLightsService implements ILightsService {
   private WARMWHITE: [number, number, number] = [0xd9, 0x00, 0xff];
 
 
-  public constructor(sensorService: ISensorService) {
+  public constructor(sensorService: ISensorService, systemService: ISystemService) {
     this.ledService = new SPILed(0, 0, 160);
     this.activeColor = this.COLDWHITE;
 
@@ -23,6 +24,8 @@ export default class LEDLightsService implements ILightsService {
         console.log("Error on retrieving next: " + err);
       },
       next: open => {
+        if(systemService.systemState === 'off') return;
+
         if (open === true && !this.doorOpen) {
           this.fadeColor(
             LEDLightsService.calcColorWithBrightness(

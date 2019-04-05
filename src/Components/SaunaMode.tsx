@@ -58,8 +58,8 @@ export default class SaunaMode extends React.Component<ISaunaModeProps, {}> {
         <InfoContainer>
           <InfoParagraph>{this.props.name}</InfoParagraph>
           <SettingsBox>
-            <InfoParagraph><Icon size={20} name={"tint"} color={MaterialColors.white}/>{this.buildInfoString(this.props.minHumidity, this.props.maxHumidity)}%</InfoParagraph>
             <InfoParagraph><Icon size={20} name={"thermometer"} color={MaterialColors.white}/>{this.buildInfoString(this.props.minDegree, this.props.maxDegree)}°C</InfoParagraph>
+            <InfoParagraph><Icon size={20} name={"tint"} color={MaterialColors.white}/>{this.buildInfoString(this.props.minHumidity, this.props.maxHumidity)}%</InfoParagraph>
           </SettingsBox>
         </InfoContainer>
       </Container>
