@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 const player = require('play-sound')({});
+const kill = require('tree-kill');
 
 export default class SpeakerMusicService implements IMusicService {
 
@@ -44,7 +45,9 @@ export default class SpeakerMusicService implements IMusicService {
   }
 
   stopMusic(): void {
-    this.audio.kill();
+    //this.audio.kill();
+    kill(this.audio.pid);
+
   };
 
 }

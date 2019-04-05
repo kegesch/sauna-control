@@ -75,11 +75,12 @@ export default class LEDLightsService implements ILightsService {
 
   public async off(): Promise<void> {
     this.status = "off";
-    await this.setColor(0x00, 0x00, 0x00);
+    this.activeColor = [0x00, 0x00, 0x00];
   }
 
   async setColor(red: number, green: number, blue: number) {
     this.activeColor = [red, green, blue];
+    if (!(this.status == "on" || this.statusAuto == "on")) return;
     await this.update();
   }
 
@@ -121,7 +122,6 @@ export default class LEDLightsService implements ILightsService {
   }
 
   private async update() {
-    if (!(this.status == "on" || this.statusAuto == "on")) return;
     await this.setColorArray(
       LEDLightsService.calcColorWithBrightness(
         this.activeColor,
