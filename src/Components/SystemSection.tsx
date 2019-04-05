@@ -5,11 +5,13 @@ import { MaterialColors, Separator } from "./HelperComponents";
 import { BoxedIcon } from "./Icon";
 import LightsStore from "./Stores/LightsStore";
 import SensorStore from "./Stores/SensorStore";
+import MusicStore from "./Stores/MusicStore";
 
 interface ISystemSectionProps {
   className?: string;
   lightsStore?: LightsStore;
   sensorStore?: SensorStore;
+  musicStore?: MusicStore;
 }
 
 const StyledIcon = styled(BoxedIcon)`
@@ -23,7 +25,7 @@ const StyledIcon = styled(BoxedIcon)`
       : MaterialColors.white};
 `;
 
-@inject("lightsStore", "sensorStore")
+@inject("lightsStore", "sensorStore", "musicStore")
 @observer
 class SystemSection extends React.Component<ISystemSectionProps, {}> {
   public render() {
@@ -53,7 +55,7 @@ class SystemSection extends React.Component<ISystemSectionProps, {}> {
           size={22}
           name="volume"
           color={MaterialColors.white}
-          isEnabled={false}
+          isEnabled={this.props.musicStore.isPlaying}
         />
       </div>
     );

@@ -1,11 +1,11 @@
-import {action, flow, observable} from "mobx";
+import {action, computed, flow, observable} from "mobx";
 import Music from "../../Model/Music";
 import IMusicService from "../../Services/Interfaces/IMusicService";
 
 export default class MusicStore {
   @observable public volume: number = 100;
   @observable public musicFiles: Music[];
-  @observable public isPlaying: boolean = false;
+  @observable public currentMusic: Music = undefined;
 
   private musicService: IMusicService;
 
@@ -13,6 +13,11 @@ export default class MusicStore {
     this.musicService = musicService;
 
     this.refreshFiles();
+  }
+
+  @computed
+  public get isPlaying() {
+    return this.currentMusic !== undefined;
   }
 
   @action
@@ -33,12 +38,11 @@ export default class MusicStore {
   @action
   public playMusic(musicFile: Music) {
     if(!this.isPlaying) {
-      console.log("playing music " + musicFile.title);
+      this.currentMusic = musicFile;
       this.musicService.playMusic(musicFile, true);
     } else {
-      console.log("stopping music");
+      this.currentMusic = undefined;
       this.musicService.stopMusic();
     }
-    this.isPlaying = !this.isPlaying;
   }
 }

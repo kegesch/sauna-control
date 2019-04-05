@@ -1,31 +1,32 @@
 import IMusicService from "./Interfaces/IMusicService";
 import Music from "../Model/Music";
 import * as fs from "fs";
-const id3 = require("node-id3");
-// @ts-ignore
-import * as lame from 'lame';
-// @ts-ignore
-import Speaker from 'speaker';
+import * as os from "os";
+import * as path from "path";
+const player = require('play-sound')({});
 
 export default class SpeakerMusicService implements IMusicService {
 
-  private decoder: lame.Lame;
-  private speaker: Speaker;
+  private audio: any;
 
   constructor() {
   }
 
   public async getMusicFiles(): Promise<Music[]> {
     return new Promise<Music[]>(((resolve, reject) => {
-      const searchPath = "assets/music/";
+      const homedir = os.homedir();
+      const searchPath = homedir+"/music/";
+      console.log("searching music in " + searchPath);
+
       try {
         fs.readdir(searchPath, (err, files) => {
           let music: Music[] = [];
-          files.forEach(file => {
-            let tags = id3.read(searchPath + file);
-            console.log(tags);
-            music.push(new Music(tags.artist, tags.title, searchPath + file));
-          });
+
+          files = files.filter(v => path.extname(v) == '.mp3');
+          files.forEach((file)  => {
+              music.push(new Music(file.split(".")[0], searchPath + file));
+            }
+          );
           resolve(music);
         })
       } catch(err) {
@@ -36,17 +37,14 @@ export default class SpeakerMusicService implements IMusicService {
   }
 
   playMusic(music: Music, repeat: boolean): void {
-    let audioOptions = {channels: 2, bitDepth: 16, sampleRate: 44100};
-    this.decoder = new lame.Decoder();
-    this.speaker = new Speaker(audioOptions);
+    this.audio = player.play(music.filepath, function(err: any){
+      if (err) throw err;
+    })
 
-    fs.createReadStream(music.filePath)
-      .pipe(this.decoder).pipe(this.speaker);
   }
 
   stopMusic(): void {
-    this.decoder.unpipe();
-    this.speaker.close();
-  }
+    this.audio.kill();
+  };
 
 }

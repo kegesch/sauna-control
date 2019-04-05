@@ -39,17 +39,16 @@
     "epoll": "^2.0.6",
     "hiredis": "^0.5.0",
     "htu21d-i2c": "Y0nnyy/node-htu21d",
-    "lame": "^1.2.4",
     "mobx": "^5.5.0",
     "mobx-react": "^5.3.1",
     "moment": "^2.22.2",
     "node-id3": "kbuffington/node-id3",
     "pi-spi": "^1.0.3",
+    "play-sound": "^1.1.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.3.1",
     "rxjs": "^5.5.12",
-    "speaker": "^0.4.1",
     "styled-components": "^3.4.10"
   },
   "devDependencies": {
