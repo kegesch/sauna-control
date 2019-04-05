@@ -9,9 +9,10 @@ export default class LEDLightsService implements ILightsService {
   private brightness: number = 1.0;
   private doorOpen: boolean = false;
 
-  private WARMWHITE: [number, number, number] = [0xff, 0xbf, 0x0b];
   private COLDWHITE: [number, number, number] = [0xff, 0xff, 0xff];
   private activeColor: [number, number, number] = this.COLDWHITE;
+  private WARMWHITE: [number, number, number] = [0xd9, 0x00, 0xff];
+
 
   public constructor(sensorService: ISensorService) {
     this.ledService = new SPILed(0, 0, 160);
