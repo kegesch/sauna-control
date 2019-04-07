@@ -1,14 +1,14 @@
-import ISystemService from "./Interfaces/ISystemService";
+import ISystemService, {SystemState} from "./Interfaces/ISystemService";
 import * as Rx from "rxjs";
 
 export default class SystemService implements ISystemService {
-  private systemStateVar: "on" | "off";
+  private systemStateVar: SystemState;
 
   public isOn$: Rx.Subject<boolean> = new Rx.Subject<boolean>();
 
-  public set systemState(state: "on" | "off") {
+  public set systemState(state: SystemState) {
     this.systemStateVar = state;
-    this.isOn$.next(state == "on");
+    this.isOn$.next(state == SystemState.ON);
   }
 
   public get systemState() {

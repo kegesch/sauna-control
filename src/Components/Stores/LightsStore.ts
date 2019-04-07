@@ -44,7 +44,6 @@ export default class LightsStore {
     this.selectedColorIndex = index;
     this.brightness = 100;
     let colorArray = this.colorToHexArray(this.colors[index]);
-    if(!this.isOn) this.lightsService.on();
     this.lightsService.setColor(colorArray[0], colorArray[1], colorArray[2]);
     this.isAuto = false;
     this.isOn = true;
