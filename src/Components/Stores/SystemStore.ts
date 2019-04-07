@@ -1,6 +1,7 @@
 import { action, computed, observable } from "mobx";
 import { ISensorService } from "../../Services/Interfaces/ISensorService";
 import ISystemService from "../../Services/Interfaces/ISystemService";
+import {IEnergyCountingService} from "../../Services/Interfaces/IEnergyCountingService";
 
 export default class SystemStore {
   @computed
@@ -17,9 +18,12 @@ export default class SystemStore {
   @observable
   public energyOn: boolean;
 
+  @observable
+  public currentEnergyDemand: number = 0;
+
   private systemService: ISystemService;
 
-  constructor(systemService: ISystemService, sensorService: ISensorService) {
+  constructor(systemService: ISystemService, sensorService: ISensorService, energyCountingService: IEnergyCountingService) {
     this.systemService = systemService;
 
     sensorService.doorOpen$.subscribe({
@@ -33,6 +37,11 @@ export default class SystemStore {
         console.error("Could not retrieve energy status from SensorService."),
       next: (value: boolean) => this.setEnergyOn(value)
     });
+
+    energyCountingService.currentDemandInMin$.subscribe((demandInMin: number) => {
+      this.setCurrentEnergyDemand(demandInMin);
+    })
+
   }
 
   @computed
@@ -71,5 +80,10 @@ export default class SystemStore {
   @action
   private setEnergyOn(energyOn: boolean) {
     this.energyOn = energyOn;
+  }
+
+  @action
+  private setCurrentEnergyDemand(currentEnergyDemand: number) {
+    this.currentEnergyDemand = currentEnergyDemand;
   }
 }

@@ -28,6 +28,8 @@ import PIDTemperatureService from "./Services/PIDTemperatureService";
 import SystemService from "./Services/SystemService";
 import IMusicService from "./Services/Interfaces/IMusicService";
 import SpeakerMusicService from "./Services/SpeakerMusicService";
+import {IEnergyCountingService} from "./Services/Interfaces/IEnergyCountingService";
+import {EnergyCountingService} from "./Services/EnergyCountingService";
 
 interface IAppProps {
   className?: string;
@@ -48,6 +50,7 @@ class App extends React.Component<IAppProps, {}> {
   private sensorService: ISensorService = new GPIOSensorService(
     this.systemService
   );
+  private energyCountingService: IEnergyCountingService = new EnergyCountingService(this.sensorService);
   private temperatureService: ITemperatureService = new PIDTemperatureService(
     this.sensorService
   );
@@ -70,7 +73,7 @@ class App extends React.Component<IAppProps, {}> {
       this.sensorService,
       this.systemService
     ),
-    systemStore: new SystemStore(this.systemService, this.sensorService),
+    systemStore: new SystemStore(this.systemService, this.sensorService, this.energyCountingService),
     weatherStore: new WeatherStore()
   };
 

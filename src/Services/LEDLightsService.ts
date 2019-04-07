@@ -69,6 +69,7 @@ export default class LEDLightsService implements ILightsService {
     const interpolationStep = Math.min(Math.max(temp, 0), 100) / 100;
     const interpolated = LEDLightsService.interpolateColor(this.COLDBLUE, this.WARMRED, interpolationStep);
     const colors = LEDLightsService.calcColorWithBrightness(interpolated, this.brightness);
+    this.activeColor = colors;
     await this.setColorArray(colors);
   }
 
