@@ -3,6 +3,7 @@ import Music from "../Model/Music";
 import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
+import {setMaxListeners} from "cluster";
 const player = require('play-sound')({});
 const kill = require('tree-kill');
 
@@ -25,7 +26,11 @@ export default class SpeakerMusicService implements IMusicService {
 
           files = files.filter(v => path.extname(v) == '.mp3');
           files.forEach((file)  => {
-              music.push(new Music(file.split(".")[0], searchPath + file));
+              const filename = file.split(".")[0];
+              const split = filename.split(" - ");
+              const songname = split[0];
+              const duration = parseInt(split[1]);
+              music.push(new Music(songname, searchPath + file, duration));
             }
           );
           resolve(music);
@@ -45,9 +50,7 @@ export default class SpeakerMusicService implements IMusicService {
   }
 
   stopMusic(): void {
-    //this.audio.kill();
     kill(this.audio.pid);
-
   };
 
 }
