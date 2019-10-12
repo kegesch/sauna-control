@@ -1,21 +1,27 @@
-## Minimal Electron, React, TypeScript and Webpack boilerplate
+## Heatwave
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fkegesch%2Fsauna-control%2Fbadge%3Fref%3Dmaster&style=for-the-badge)](https://actions-badge.atrox.dev/kegesch/sauna-control/goto?ref=master)
 
-Minimal Electron, React, TypeScript and Webpack boilerplate to help you get started with building your next app.
+<div style="width: 128px; margin: 20px auto"><img alt="logo" src="assets/icons/128x128.png" /> </div>
+
+***
+
+An electron-based sauna control. Written in React.
+
+### Screenshots
+![home](project/screenshots/home.png)
+![home](project/screenshots/mode.png)
+![home](project/screenshots/detail.png)
+![home](project/screenshots/lights.png)
+![home](project/screenshots/timer.png)
+![home](project/screenshots/music.png)
 
 ### Table of contents
 
 - [Install](#install)
 - [Usage](#usage)
 - [Code of Conduct](#code-of-conduct)
-- [License](#license)
 
 ### Install
-
-#### Clone this repo
-
-```
-git clone --depth=1 https://github.com/Y0nnyy/electron-react-boilerplate.git
-```
 
 #### Install dependencies
 
