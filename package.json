@@ -35,8 +35,7 @@
   },
   "dependencies": {
     "bindings": "TooTallNate/node-bindings#pull/40/head",
-    "electron": "^3.0.8",
-    "epoll": "^2.0.6",
+    "electron": "^3.1.13",
     "hiredis": "^0.5.0",
     "htu21d-i2c": "Y0nnyy/node-htu21d",
     "mobx": "^5.5.0",
@@ -88,6 +87,7 @@
   },
   "optionalDependencies": {
     "i2c-bus": "^4.0.7",
-    "onoff": "^3.2.2"
+    "onoff": "^3.2.2",
+    "epoll": "^2.0.6"
   }
 }

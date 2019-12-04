@@ -30,6 +30,8 @@ import IMusicService from "./Services/Interfaces/IMusicService";
 import SpeakerMusicService from "./Services/SpeakerMusicService";
 import {IEnergyCountingService} from "./Services/Interfaces/IEnergyCountingService";
 import {EnergyCountingService} from "./Services/EnergyCountingService";
+import HysteresisTemperatureService from "./Services/HysteresisTemperatureService";
+import HysteresisHumidityService from "./Services/HysteresisHumidityService";
 
 interface IAppProps {
   className?: string;
@@ -51,10 +53,10 @@ class App extends React.Component<IAppProps, {}> {
     this.systemService
   );
   private energyCountingService: IEnergyCountingService = new EnergyCountingService(this.sensorService);
-  private temperatureService: ITemperatureService = new PIDTemperatureService(
+  private temperatureService: ITemperatureService = new HysteresisTemperatureService(
     this.sensorService
   );
-  private humidityService: IHumidityService = new PIDHumidityService(
+  private humidityService: IHumidityService = new HysteresisHumidityService(
     this.sensorService
   );
   private lightsService: ILightsService = new LEDLightsService(

@@ -8,12 +8,14 @@
 An electron-based sauna control. Written in React.
 
 ### Screenshots
-![home](project/screenshots/home.png)
-![home](project/screenshots/mode.png)
-![home](project/screenshots/detail.png)
-![home](project/screenshots/lights.png)
-![home](project/screenshots/timer.png)
-![home](project/screenshots/music.png)
+<html lang="html">
+<img alt="home" src="project/screenshots/home.png" width="200" />
+<img alt="home" src="project/screenshots/mode.png" width="200" />
+<img alt="home" src="project/screenshots/detail.png" width="200" />
+<img alt="home" src="project/screenshots/lights.png" width="200" />
+<img alt="home" src="project/screenshots/timer.png" width="200" />
+<img alt="home" src="project/screenshots/music.png" width="200" />
+</html>
 
 ### Table of contents
 
